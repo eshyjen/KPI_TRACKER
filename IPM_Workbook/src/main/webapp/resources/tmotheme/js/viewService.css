@@ -1,0 +1,35 @@
+.serviceStateContentV2 {
+    width: 265px;
+    font-size: 10px;
+}
+
+.serviceStateWrapV2 {
+    width: 45px;
+    float: left;
+    padding-left: 7px;
+    text-align: left;
+    white-space: pre-wrap;
+    /** For IE 7 */
+    #white-space: normal;
+    word-wrap: break-word;
+}
+
+.serviceStateContentV1 {
+    width: 173px;
+    font-size: 10px;
+}
+
+.serviceStateWrapV1 {
+    width: 50px;
+    float: left;
+    padding-left: 7px;
+    text-align: left;
+    white-space: pre-wrap;
+    /** For IE 7 */
+    #white-space: normal;
+    word-wrap: break-word;
+}
+
+.serviceStateImg {
+    float:left;
+}

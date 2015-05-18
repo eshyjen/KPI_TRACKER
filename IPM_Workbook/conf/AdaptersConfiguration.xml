@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<configuration> 
+	<header>
+		<result delimiterParsingDisabled="true" forceReloadCheck="true">
+		</result>
+	</header>
+    	<override>
+        	<properties fileName="Configuration.properties" config-name="Configuration">
+            		<reloadingStrategy refreshDelay="100" config-class="org.apache.commons.configuration.reloading.FileChangedReloadingStrategy"/>
+        	</properties>
+		
+
+	<properties fileName="application.properties" config-name="application.properties">
+            <reloadingStrategy refreshDelay="100" config-class="org.apache.commons.configuration.reloading.FileChangedReloadingStrategy"/>
+    </properties>
+    
+    <properties fileName="email.properties" config-name="email.properties">
+            <reloadingStrategy refreshDelay="100" config-class="org.apache.commons.configuration.reloading.FileChangedReloadingStrategy"/>
+    </properties>
+
+	</override>
+</configuration>

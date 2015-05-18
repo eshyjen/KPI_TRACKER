@@ -1,0 +1,201 @@
+@CHARSET "ISO-8859-1";
+H3 {
+color: #000040;
+border-bottom: 1px solid #A0A0FF;
+}
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	font-family: calibri, verdana;
+	font-size: 14px;
+}
+.body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+DL DT {
+font-style: italic;
+}
+
+DL DD {
+border-right: 1px dotted silver;
+border-bottom: 1px dotted silver;
+display:inline;
+}
+
+td {
+	font-family: calibri, verdana;
+	font-size: 12px;
+	}
+
+
+OL, LI {
+margin-top: 0px;
+padding-top: 0px;
+}
+
+LI {
+font-size: 75%;
+}
+
+H1,H2{
+background-color: #FFF0F5;
+}
+
+H5 {
+font-size: 80%;
+margin: 0px;
+padding: 0px;
+}
+
+.header1 {
+	font-family: calibri, verdana;
+	font-size: 11px;
+	text-align: right;
+	margin: 0px;
+	color: #eaeaea;
+	height:52px; 
+	background-color:#030f1d;
+	background-image:url(images/header_strip_l1.jpg);
+	background-repeat:no-repeat;
+	vertical-align:middle;
+	padding-right:12px;
+}
+.header2 {
+	font-family: calibri, verdana;
+	font-size: 24px;
+	margin: 0px;
+	color: #eaeaea;
+	height:70px; 
+	background-color:#1d758b;
+	background-image:url(images/header_strip_l2.jpg);
+	background-repeat:no-repeat;
+	vertical-align:middle;
+	padding-left:12px;
+}
+.box1 {
+	padding:12px;
+	background-color:#ebebeb;
+	border: 1px solid #cccccc;
+}
+.list1 {
+	height:32px; 
+	padding-left:30px;
+}
+.list2 {
+	height:32px; 
+}
+
+.list1font {
+	font-family: calibri, verdana;
+	font-size: 14px;
+	font-weight:bold;
+	color: #227188;
+	text-decoration:none;
+}
+.list1font:hover {
+	font-family: calibri, verdana;
+	font-size: 14px;
+	font-weight:bold;
+	color: #227188;
+	text-decoration:underline;
+}
+.list1font2 {
+	font-family: calibri, verdana;
+	font-size: 12px;
+	color: #3b3b3b;
+	text-decoration:none;
+}
+.authenticated {
+background-color: #FFFFA0;
+padding: 2px;
+}
+
+.footer, .footer a { 
+text-align:right;
+border-top: 1px solid silver;
+padding-top: 2px;
+font-family: monospace;
+color:silver
+}
+
+.footer a {
+text-decoration: none;
+}
+
+.footer a:hover {
+text-decoration: underline;
+}
+
+.even{
+	background-color: #e8e8e8;
+	
+}
+
+.odd{
+	background-color: #d1d1d3;
+	
+}
+
+.welcome {
+	font-family: calibri, verdana;
+	font-size: 20px;
+	margin: 0px;
+	color: #1d6b52;
+	font-weight:bold;
+	height:32px; 
+	vertical-align:middle;
+	padding-left:12px;
+	text-align:left;
+}
+
+.logout {
+	font-family: calibri, verdana;
+	font-size: 14px;
+	margin: 0px;
+	color: #0089e1;
+	font-weight:bold;
+	vertical-align:middle;
+	padding-right:12px;
+	text-align:right;
+	text-decoration:none;
+}
+
+.logout:hover {
+	font-family: calibri, verdana;
+	font-size: 14px;
+	margin: 0px;
+	color: #0089e1;
+	font-weight:bold;
+	vertical-align:middle;
+	padding-right:12px;
+	text-align:right;
+	text-decoration:underline;
+}
+
+.fontHyperlink1 {
+	font-family: calibri, verdana;
+	font-size: 12px;
+	margin: 0px;
+	color: #004978;
+	font-weight:bold;
+	vertical-align:middle;
+	padding-right:12px;
+	text-align:middle;
+	text-decoration:none;
+}
+.fontHyperlink1:hover {
+	font-family: calibri, verdana;
+	font-size: 12px;
+	margin: 0px;
+	color: #004978;
+	font-weight:bold;
+	vertical-align:middle;
+	padding-right:12px;
+	text-align:middle;
+	text-decoration:underline;
+}

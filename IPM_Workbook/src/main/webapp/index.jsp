@@ -1,0 +1,1 @@
+<jsp:forward page="/v1/public/login.html"/>

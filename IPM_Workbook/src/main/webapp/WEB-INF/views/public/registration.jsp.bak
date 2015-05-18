@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%
+	response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
+	response.setHeader("Pragma", "no-cache"); //HTTP 1.0
+	response.setDateHeader("Expires", 0); //prevents caching at the proxy server
+%>
+
+
+<%@include file="taglib.jsp" %>
+<%-- <%@ page contentType="text/html;charset=UTF-8" language="java"%> --%>
+<%@ page session="false"%>
+<html>
+<head>
+<link href="${rootURL}/resources/bootstrap/css/bootstrap.css" media="screen" rel="stylesheet" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title><spring:message code="label.form.title"></spring:message></title>
+</head>
+<body>
+	<div class="container">
+		<div class="span12">
+			<h1>
+				<spring:message code="label.form.title"></spring:message>
+			</h1>
+			<%-- <form:form modelAttribute="registrationDTO" method="POST" action="registration.html" enctype="utf8">
+				<br>
+				<tr>
+					<td><label><spring:message code="label.user.firstName"></spring:message></label></td>
+					<td><form:input path="userFristName" value="" /></td>
+					<form:errors path="userFristName" cssClass="alert alert-error" element="div" />
+				</tr>
+				<tr>
+					<td><label><spring:message code="label.user.lastName"></spring:message></label></td>
+					<td><form:input path="userLastName" value="" /></td>
+					<form:errors path="userLastName" cssClass="alert alert-error" element="div" />
+				</tr>
+				<tr>
+					<td><label><spring:message code="label.user.email"></spring:message></label></td>
+					<td><form:input path="emailId" value="" /></td>
+					<form:errors path="emailId" cssClass="alert alert-error" element="div" />
+				</tr>
+				<tr>
+					<td><label><spring:message code="label.user.password"></spring:message></label></td>
+					<td><form:input path="password" value="" type="password" /></td>
+					<form:errors path="password" cssClass="alert alert-error" element="div" />
+				</tr>
+				<tr>
+					<td><label><spring:message code="label.user.confirmPass"></spring:message></label></td>
+					<td><form:input path="matchingPassword" value="" type="password" /></td>
+					<form:errors cssClass="alert alert-error" element="div" />
+				</tr>
+				<button type="submit" class="btn btn-primary">
+					<spring:message code="label.form.submit"></spring:message>
+				</button>
+			</form:form> --%>
+			
+			
+			
+			
+			<form:form modelAttribute="registrationDTO" method="POST" action="registration.html" enctype="utf8">
+				<br>
+				 <table>
+				<tr>
+					<td><label><spring:message code="label.user.firstName"></spring:message></label></td>
+					<td><form:input path="userFristName" value="" /></td>
+					<td><form:errors path="userFristName" cssClass="alert alert-error"/></td>
+				</tr>
+				<tr>
+					<td><label><spring:message code="label.user.lastName"></spring:message></label></td>
+					<td><form:input path="userLastName" value="" /></td>
+					<td><form:errors path="userLastName" cssClass="alert alert-error"/></td>
+				</tr>
+				<tr>
+					<td><label><spring:message code="label.user.email"></spring:message></label></td>
+					<td><form:input path="emailId" value="" /></td>
+					<td><form:errors path="emailId" cssClass="alert alert-error"/></td>
+				</tr>
+				
+				<tr>
+         	<td><spring:message code="label.kpi.role" text="Select role(s)" /></td>
+         	<td>
+			<form:select path="userSelectedRole">
+				<c:forEach items="${roles}" var="rol">
+					<option value="${rol.id}">${rol.name}</option>
+				</c:forEach>
+			</form:select>
+			</td>
+			<td><form:errors path="userSelectedRole" cssClass="alert alert-error" /></td>
+		</tr>
+				
+				<tr>
+					<td><label><spring:message code="label.user.password"></spring:message></label></td>
+					<td><form:input path="password" value="" type="password" /></td>
+					<td><form:errors path="password" cssClass="alert alert-error"/></td>
+				</tr>
+				<tr>
+					<td><label><spring:message code="label.user.confirmPass"></spring:message></label></td>
+					<td><form:input path="matchingPassword" value="" type="password" /></td>
+					<td><form:errors cssClass="alert alert-error" /></td>
+				</tr>
+				<tr>
+					<td><label><spring:message code="label.user.form.captchaCode"></spring:message></label>
+					</td>
+					<td><img
+					src='<%=request.getContextPath()%>/<c:url value="simpleCaptcha.png" />' /></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><label><spring:message code="label.user.captchaCode"></spring:message></label></td>
+					<td><form:input path="captchaCode"/></td>
+					<td><form:errors path="captchaCode" cssClass="alert alert-error" /></td>
+				</tr>
+				
+				<tr>
+				<td><button type="submit" class="btn btn-primary">
+					<spring:message code="label.form.submit"></spring:message>
+				</button></td>
+				<td></td>
+				<td></td>
+				</tr>
+				</table>
+			</form:form>
+			
+			<br> <a href="<c:url value="login.html" />"><spring:message code="label.form.loginLink"></spring:message></a>
+		</div>
+	</div>
+</body>
+
+</html>

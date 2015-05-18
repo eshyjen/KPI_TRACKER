@@ -1,0 +1,160 @@
+/*TMO CA*/
+.currentStateIcon {
+	vertical-align: sub;
+}
+
+.topMargin10 {
+	margin-top: 10px;
+}
+
+.rightAlign {
+	text-align: right;
+	width: 90px;
+}
+
+.subRow {
+	margin-left: 135px;
+	margin-top: 13px;
+}
+
+.disabled, .edit-row .disabled, .edit-row .disabled select {
+	color: #6a6a6a;
+} 
+
+.dropdown {
+	display: inline-block;
+}
+
+.detailsTextfield {
+	margin-bottom: 5px;
+    width: 200px;
+}
+
+textarea.billDescription  {
+	width: 200px;
+}
+
+textarea.changeStateComments {
+	width: 280px;
+}
+
+#fade{
+    display: none;
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    z-index:1001;
+    -moz-opacity: 0.7;
+    opacity:.70;
+    filter: alpha(opacity=70);
+}
+#light{
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 2px solid #FFFFFF;
+    display: none;
+    height: 400px;
+    top: 50%;
+    left: 50%;
+    margin-left: -200px;
+    margin-top: -200px;   
+    overflow: visible;
+    padding: 20px;
+    position: absolute;
+    width: 300px;
+    z-index: 1002;
+    border-radius: 10px;
+}
+
+#lightAddProduct, #lightDeassociateProduct {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 2px solid #FFFFFF;
+    display: none;
+    height: 580px;
+    top: 50%;
+    left: 50%;
+    margin-left: -375px;
+    margin-top: -300px;   
+    overflow: visible;
+    padding: 20px;
+    position: absolute;
+    width: 700px;
+    z-index: 1002;
+    border-radius: 10px;
+}
+
+.popupLink {
+	text-decoration: none;
+}
+
+.service_table_50 {
+    background-color: white;
+    width: 50%;
+}
+
+.service_table_100 {
+    background-color: white;
+    width: 100%;
+}
+
+#service-state-image {
+    vertical-align: middle;
+}
+
+#popup-header-big1 {
+    background-color: #6A6A6A;
+    border-radius: 5px;
+    font-size: 18px;
+    padding: 7px;
+    color:#fff;
+    width: 682px;
+    font-weight:bold;
+}
+
+#popup-header-big2 {
+    background-color: #6A6A6A;
+    border-radius: 5px;
+    font-size: 18px;
+    padding: 7px;
+    color:#fff;
+    width: 682px;
+    font-weight:bold;
+}
+#popup-header {
+    background-color: #6A6A6A;
+    border-radius: 5px;
+    font-size: 18px;
+    padding: 7px;
+    color:#fff;
+    width: 285px;
+    font-weight:bold;
+}
+ 
+a.disabled {
+    color: #6a6a6a;
+}
+
+.tablink {
+    text-decoration: none;
+    color: #000000;
+}
+ 
+table.providerApiSettings {
+    width: 75%;
+ }
+
+table.providerApiSettings .label {
+    width: 100px;
+ }
+ 
+ .sorting_asc {
+background: url("../i/sort_asc.png") no-repeat center right;
+background-color: #ccc;
+}
+.sorting_desc {
+background: url("../i/sort_desc.png") no-repeat center right;
+background-color: #ccc;
+}
+
