@@ -15,7 +15,7 @@ function back2ProtectedHome() {
 }
 
 </script>
-	
+<!-- commit to github -->
 </head>
 <div class="header">
 	<table cellpadding="0" cellspacing="0" width="100%">
@@ -37,6 +37,6 @@ function back2ProtectedHome() {
 			<a class="logout" href='<c:url value="${rootURL}/v1/public/logout.html"/>'>Logout</a></div><% } %></td>
 		</tr>
 	</table>
-	
+
 </div>
 
