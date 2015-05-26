@@ -53,6 +53,7 @@ public interface AssetDAO {
 	 *             when the operation fails
 	 */
 	public void remove(Asset entity);
+	public void remove(String  assetId);
 
 	/**
 	 * Persist a previously saved Asset entity and return it or a copy of it to

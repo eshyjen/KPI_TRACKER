@@ -1,7 +1,9 @@
 package com.ericsson.ipm.v1.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
@@ -15,73 +17,73 @@ public class RegistrationDTO implements Serializable {
 
 
 	private static final long serialVersionUID = 1L;
-
-
+	
+	
 	private int id;
-
+	
 	@NotNull
     @NotEmpty
 	private String userFristName;
-
+	
 	@NotNull
     @NotEmpty
 	private String userLastName;
-
+	
 	@ValidEmail
 	@NotNull
     @NotEmpty
 	private String emailId;
-
+	
 	@NotNull
     @NotEmpty
 	private String password;
-
+	
 	@NotNull
     @NotEmpty
     private String matchingPassword;
 
 	private String costCenter;
-
+	
 	private Boolean role = Boolean.FALSE;
-
+	
 	private String currentLineManager;
-
+	
 	private Date dateOfJoinInMediaAccount;
-
+	
 	private String educationalQualification;
-
+	
 	private String employeeId;
-
+	
 	private String jobRole;
-
+	
 	private String jobStage;
-
+	
 	private String lastYearIPMRating;
-
+	
 	private String manHourRate;
-
+	
 	private Date modifiedDate;
-
+	
 	private String previousLineManeger;
-
+	
 	private String previousOrganisation;
-
+	
 	private Date registrationDate;
-
+	
 	private String signunId;
-
+	
 	private int totalEricssonExperienceInMonths;
-
+	
 	private double totalITExperience;
-
+	
 	private double totalYearsOfExperience;
-
+	
 	private String yearOfIPM;
-
+	
 	private String yearOfLastPromotion;
-
+	
 	private String captchaCode;
-
+	
 	private Integer userSelectedRole;
 
 	public int getId() {
@@ -292,8 +294,8 @@ public class RegistrationDTO implements Serializable {
 	public void setYearOfLastPromotion(String yearOfLastPromotion) {
 		this.yearOfLastPromotion = yearOfLastPromotion;
 	}
-
-
+	
+	
 
 	public String getCaptchaCode() {
 		return captchaCode;
@@ -302,8 +304,8 @@ public class RegistrationDTO implements Serializable {
 	public void setCaptchaCode(String captchaCode) {
 		this.captchaCode = captchaCode;
 	}
-
-
+	
+	
 
 	public Integer getUserSelectedRole() {
 		return userSelectedRole;
@@ -336,7 +338,7 @@ public class RegistrationDTO implements Serializable {
 				+ ", yearOfLastPromotion=" + yearOfLastPromotion + "]";
 	}
 
-
-
-
+	
+	
+	
 }

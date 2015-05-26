@@ -41,51 +41,51 @@ import com.ericsson.v1.util.Constants;
 @Controller
 @RequestMapping(Constants.BASE_PUBLIC_URL_PATH)
 public class RegistrationController {
-
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationController.class);
-
-
+	
+	
 	private static final Configuration CONFIG = AdaptersConfiguration
 			.getInstance().getConfiguration();
 
 	private UserProfileService userProfileService;
-
-
+	
+	
     private ApplicationEventPublisher eventPublisher;
-
+    
     private UserValidator userValidator;
-
+    
     private MessageSource messages;
-
+    
     private Environment env;
-
+    
     private JavaMailSender mailSender;
-
+    
     private RoleService roleService;
-
-
+    
+    
     /*@InitBinder
     private void initBinder(WebDataBinder binder) {
         binder.setValidator(userValidator);
     }*/
-
+	
 	@RequestMapping(value =Constants.IPM_CONTROLLER_REGISTRATIONCONTROLLER_SHOWREGISTRATIONFORM_URI + Constants.IPM_CONTROLLER_URL_SUFFIX, method = RequestMethod.GET)
     public String showRegistrationForm(final HttpServletRequest request, final Model model) {
         LOGGER.debug("Rendering registration page.");
         final RegistrationDTO registrationDTO = new RegistrationDTO();
         model.addAttribute("registrationDTO", registrationDTO);
-        model.addAttribute("roles", roleService.findAll());
+        model.addAttribute("roles", roleService.findAll()); 
         return "public/registration";
     }
-
-	// final Errors errors,
+	
+	// final Errors errors, 
 	@RequestMapping(value = Constants.IPM_CONTROLLER_REGISTRATIONCONTROLLER_REGISTERUSERACCOUNT_URI + Constants.IPM_CONTROLLER_URL_SUFFIX, method = RequestMethod.POST)
-    public ModelAndView registerUserAccount(@ModelAttribute("registrationDTO") @Valid final RegistrationDTO registrationDTO,
+    public ModelAndView registerUserAccount(@ModelAttribute("registrationDTO") @Valid final RegistrationDTO registrationDTO, 
     		final BindingResult result, final HttpServletRequest request, Model model) {
         LOGGER.debug("Registering user account with information: {}", registrationDTO);
         userValidator.validate(registrationDTO, result);
         if (result.hasErrors()) {
-        	model.addAttribute("roles", roleService.findAll());
+        	model.addAttribute("roles", roleService.findAll()); 
             return new ModelAndView("public/registration", "registrationDTO", registrationDTO);
         }
 
@@ -107,15 +107,15 @@ public class RegistrationController {
 	@RequestMapping(value = Constants.IPM_CONTROLLER_REGISTRATIONCONTROLLER_REGITRATIONCONFIRM_URI + Constants.IPM_CONTROLLER_URL_SUFFIX, method = RequestMethod.GET)
     public String confirmRegistration(final Locale locale, final Model model, @RequestParam("token") final String token) {
         final VerificationToken verificationToken = userProfileService.getVerificationToken(token);
-
+        
         final Calendar cal = Calendar.getInstance();
         if (verificationToken != null) {
         	LOGGER.info("verificationToken.getExpiryDate().getTime() : "+verificationToken.getExpiryDate().getTime());
             LOGGER.info("cal.getTime().getTime() : "+cal.getTime().getTime());
             LOGGER.info("(verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) : "+(verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()));
-
+            
         }
-
+        
         if (verificationToken == null) {
             final String message = messages.getMessage("auth.message.invalidToken", null, locale);
             model.addAttribute("message", message);
@@ -123,7 +123,7 @@ public class RegistrationController {
         }
 
         final UserProfile user = verificationToken.getUser();
-
+        
         if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
             model.addAttribute("message", messages.getMessage("auth.message.expired", null, locale));
             model.addAttribute("expired", true);
@@ -140,7 +140,7 @@ public class RegistrationController {
     // user activation - verification
 
     @RequestMapping(value = Constants.IPM_CONTROLLER_REGISTRATIONCONTROLLER_RESENDREGISTRATIONTOKEN_URI + Constants.IPM_CONTROLLER_URL_SUFFIX, method = RequestMethod.GET)
-    public String resendRegistrationToken(final HttpServletRequest request, final Model model,
+    public String resendRegistrationToken(final HttpServletRequest request, final Model model, 
     		@RequestParam("token") final String existingToken) {
     	final Locale locale = request.getLocale();
         final VerificationToken newToken = userProfileService.generateNewVerificationToken(existingToken);
@@ -148,13 +148,13 @@ public class RegistrationController {
         final String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
         try {
         final SimpleMailMessage email = constructResetVerificationTokenEmail(appUrl, request.getLocale(), newToken, user);
-
+        
         Object isEnabled = CONFIG.getProperty("ipm.mail.is_enabled");
 		if(isEnabled != null && "true".equalsIgnoreCase(isEnabled.toString())){
 			 mailSender.send(email);
 		}
-
-
+       
+        
         } catch (final MailAuthenticationException e) {
             LOGGER.debug("MailAuthenticationException", e);
             return "public/emailError";
@@ -166,8 +166,8 @@ public class RegistrationController {
         model.addAttribute("message", messages.getMessage("message.resendToken", null, locale));
         return "public/login";
     }
-
-
+	
+	
 	private UserProfile createUserAccount(final RegistrationDTO userDTO) {
         UserProfile registered = null;
         try {
@@ -177,10 +177,10 @@ public class RegistrationController {
         }
         return registered;
     }
-
+	
 	// NON-API
 
-	private final SimpleMailMessage constructResetVerificationTokenEmail(final String contextPath, final Locale locale,
+	private final SimpleMailMessage constructResetVerificationTokenEmail(final String contextPath, final Locale locale, 
 			final VerificationToken newToken, final UserProfile user) {
         final String confirmationUrl = contextPath + Constants.BASE_PUBLIC_URL_PATH+"regitrationConfirm.html?token=" + newToken.getToken();
         LOGGER.info("constructResetVerificationTokenEmail confirmationUrl : "+confirmationUrl);
@@ -223,14 +223,14 @@ public class RegistrationController {
 	public void setMailSender(JavaMailSender mailSender) {
 		this.mailSender = mailSender;
 	}
-
+	
 	@Autowired
 	public void setRoleService(RoleService roleService) {
 		this.roleService = roleService;
 	}
 
-
-
+	
+	
 	/*protected void compareCaptcha(final RegistrationDTO registrationDTO, final BindingResult result, final HttpSession session, final HttpServletRequest request) throws Exception {
 		Captcha captcha = (Captcha) session.getAttribute(Captcha.NAME);
 		request.setCharacterEncoding(

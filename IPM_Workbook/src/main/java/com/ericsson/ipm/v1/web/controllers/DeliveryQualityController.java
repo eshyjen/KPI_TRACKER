@@ -69,22 +69,19 @@ public class DeliveryQualityController extends BaseController {
 		return "protected/deliveryQuality";
 	}
 
-	@RequestMapping(value = "saveDeliveryQualityDetails.html", method = RequestMethod.GET)
+	@RequestMapping(value = "saveDeliveryQualityDetails.html", method = RequestMethod.POST)
 	public String saveDeliveryQualityDetails(Model model, Principal prinicpal,
 			HttpServletRequest request, HttpServletResponse response) {
 
 		boolean flag = false;
 		String resultMessage = " ";
 		
-		String deliveryQualityId = request.getParameter("id");
+		String deliveryQualityId = request.getParameter("deliveryQualityId");
 		String projectType = request.getParameter("projectType");
-		String dqiScore = request
-				.getParameter("dqiScore");
+		String dqiScore = request.getParameter("dqiScore");
 		String dpiScore = request.getParameter("dpiScore");
-		String dqiDate = request
-				.getParameter("dqiDate");
-		String pmOrSpmName = request
-				.getParameter("pmOrSpmName");
+		String dqiDate = request.getParameter("dqiDate");
+		String pmOrSpmName = request.getParameter("pmOrSpmName");
 		String tlName = request.getParameter("tlName");
 		String swArchitectName = request.getParameter("swArchitectName");
 
@@ -144,7 +141,7 @@ public class DeliveryQualityController extends BaseController {
 			LOGGER.debug("exception : " + e.getStackTrace());
 		}
 
-		try {
+		/*try {
 			response.setContentType("text/html");
 			response.setHeader("Cache-Control", "no-cache");
 			response.setHeader("Pragma", "no-cache");
@@ -154,7 +151,10 @@ public class DeliveryQualityController extends BaseController {
 		} catch (Exception e) {
 			resultMessage = "<font color='red'>Sorry!! DQI cannot be Created / Updated.</font>";
 			LOGGER.debug("exception : " + e.getStackTrace());
-		}
+		}*/
+		
+		userProfile = userProfileService.findByIdWithDeliveryQuality(userProfile.getId());
+		model.addAttribute(Constants.DELIVERY_QUALITIY_LIST, userProfile.getDeliveryQualities());
 
 		return "protected/deliveryQuality";
 	}

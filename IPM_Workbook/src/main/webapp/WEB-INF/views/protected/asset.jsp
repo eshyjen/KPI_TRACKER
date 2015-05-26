@@ -9,6 +9,7 @@
 	
 	<%@page import="com.ericsson.v1.util.Constants"%>
 	<%@include file="/WEB-INF/views/public/taglib.jsp"%>
+	<%@include file="/WEB-INF/views/public/include_header.jsp" %>
 	<fmt:setBundle basename="messages" />
 <html>
 	<head>
@@ -22,16 +23,37 @@
 			<script type="text/javascript"
 				src="${rootURL}/resources/bootstrap/js/bootstrap.js"></script>
 			<script type="text/javascript" src="${rootURL}/resources/js/app.js"></script>
-			
+
+
+			<script type="text/javascript">
+				var datefield = document.createElement("input")
+				datefield.setAttribute("type", "date")
+				if (datefield.type != "date") { //if browser doesn't support input type="date", load files for jQuery UI Date Picker
+					document
+							.write('<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />\n')
+					document
+							.write('<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"><\/script>\n')
+					document
+							.write('<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"><\/script>\n')
+				}
+			</script>
+			<script>
+				if (datefield.type != "date") { //if browser doesn't support input type="date", initialize date picker widget:
+					jQuery(function($) { //on document.ready
+						$('#creationDate').datepicker();
+					})
+				}
+			</script>
+
 			<script type="text/javascript">
 			
 				function addformChanged() {
-					var checkflag = checkDisTable();
+					//var checkflag = checkDisTable();
 					//alert("checkflag "+checkflag);
-					if (checkflag == true) {
+					//if (checkflag == true) {
 						showBlank();
 						setDefaultvalues();
-					}
+					//}
 				}
 				
 				function setDefaultvalues() {
@@ -135,37 +157,35 @@
 				}
 
 				function showBlank() {
-					//alert("in showBlank");
 					document.getElementById("assetName").value = "";
 					document.getElementById("assetShortDescription").value = "";
 					document.getElementById("projectName").value = "";
 					document.getElementById("registeredInAssetPortal").value = "";
 					document.getElementById("reusedInOtherProjectsName").value = "";
 					document.getElementById("effortSave").value = "";
+					document.getElementById("creationDate").value = "";
 
 					document.forms[1].elements["assetId"].value = "";
-					window.document.getElementById("resultDiv").innerHTML = "";
-					window.document.getElementById("responseDiv").innerHTML = "";
+					//window.document.getElementById("resultDiv").innerHTML = "";
+					//window.document.getElementById("responseDiv").innerHTML = "";
 					document.getElementById('1').style.display = "none";
 					document.getElementById('2').style.display = "block";
 
 					var addbtnobj = document.getElementById("add");
-					showDiv2(addbtnobj, "2");
+					//showDiv2(addbtnobj, "2");
 				}
 				
 				function closeForm() {
-					if (document.getElementById('myalert').style.display == "block") {
-						document.getElementById('myalert').style.display = "none";
-					}
 					document.getElementById('2').style.display = 'none';
 				}
 			</script>
 			
 			<script type="text/javascript">
 			
-				function IsValid(id) {
+				function IsValid() {
 					if (isEmpty()) {
-						showSaveDiv();
+						//showSaveDiv();
+						document.assetDetailsForm.submit();
 					}
 				}
 				
@@ -186,6 +206,8 @@
 						formfield = formfield + "\n" + "Reused In Other Projects Name";
 					if (document.getElementById("effortSave").value == "")
 						formfield = formfield + "\n" + "Effort Save";
+					if (document.getElementById("creationDate").value == "")
+						formfield = formfield + "\n" + "Asset creation Date";
 					if (formfield == "") {
 						return true;
 					} else {
@@ -194,28 +216,6 @@
 					}
 				}
 				
-				
-				function showSaveDiv() {
-					//alert("showSaveDiv");
-					var leftVal = document.getElementById('2').style.left;
-					var topVal = document.getElementById('2').style.top;
-					var screenMids = screen.width / 2;
-					var curleftObjs = screenMids - 165;
-					var pos = topVal.indexOf('px');
-					topStr = topVal.substring(0, pos);
-					var topInt = parseInt(topStr) + 50;
-					document.getElementById('myalert').style.display = 'block';
-					document.getElementById('myalert').style.position = "relative";
-					document.getElementById('myalert').style.left = curleftObjs
-							+ "px";
-					document.getElementById('myalert').style.top = topInt
-							+ "px";
-					document.getElementById('2').style.position = "absolute";
-					document.getElementById('2').style.left = leftVal;
-					document.getElementById('2').style.top = topVal;
-					overlay();
-
-				}
 			</script>
 			
 			<script type="text/javascript">
@@ -225,25 +225,7 @@
 				}
 			</script>
 			
-			<script type="text/javascript">
-				function overlay2() {
-					el = document.getElementById("overlay2");
-					el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
-				}
-			</script>
-
-			<script type="text/javascript">
-				function showalert() {
-					overlay();
-					if (document.getElementById('myalert').style.display == "block") {
-						document.getElementById('myalert').style.display = "none";
 			
-					} else {
-						document.getElementById('myalert').style.display = "block";
-			
-					}
-				}
-			</script>
 			
 			<script type="text/javascript">
 				var xmlHttp;
@@ -309,7 +291,7 @@
 					var effortSave = document.getElementById("effortSave").value;
 			
 					//creating the Query String
-					var qryString = "id=" + assetId;
+					var qryString = "assetId=" + assetId;
 					qryString = qryString + "&assetName=" + assetName;
 					qryString = qryString + "&assetShortDescription=" + assetShortDescription;
 					qryString = qryString + "&projectName=" + projectName;
@@ -359,33 +341,29 @@
 						var rows = tbody.getElementsByTagName("tr");
 
 						var flag1 = checkDisTable();
-
 						if (flag1 == true) {
-
 							var cell = rows[id - 1].getElementsByTagName("td")[1];
 
 							document.getElementById('1').style.display = "none";
 							//document.getElementById('2').style.display="block";
 
-							if (document.getElementById('myalert').style.display == "block") {
-								document.getElementById('myalert').style.display = "none";
-							}
+							//if (document.getElementById('myalert').style.display == "block") {
+								//document.getElementById('myalert').style.display = "none";
+							//}
 							showDivDetails(cell);
 
 							//action = "userListAction.do?method=ajaxedit&userid="  ;
 							action = "assetDetail.html?op=getAsset&assetId=";
 							//var ProductID=rowid;
 							var assetId = cell.innerHTML;
-							alert("assetId---->"+assetId);
 							fetchAsset(action, assetId);
 
 						}
 					}
 				}
 				function checkDelete(rowNum) {
-					overlay2();
 					//var pageNum=document.getElementById("recordsperpage").value ;
-					alert("rowNum---->"+rowNum);
+					//alert("rowNum---->"+rowNum);
 					var pageNum = 5;
 					var id = rowNum;
 					var table = document.getElementById("usertable");
@@ -396,16 +374,26 @@
 					}
 
 					var cell = rows[id].getElementsByTagName("td")[1];
+					//alert("cell---->"+cell);
+					//var cell1 = rows[id - 1].getElementsByTagName("td")[1];
+					//alert("cell1---->"+cell1);
+					var id = cell.innerHTML;
+					//alert("id---->"+id);
 					var flag1 = checkDisTable();
-					alert("flag1---->"+flag1);
+					//alert("flag1---->"+flag1);
 					if (flag1 == true) {
-						showDiv2(rows[id], 'delalert');
-						document.getElementById('delalert').style.display = "block";
-						document.getElementById('usdelid').innerHTML = cell.innerHTML;
-						document.getElementById('usid').value = cell.innerHTML;
+						//showDiv2(rows[id], 'delalert');
+						//document.getElementById('delalert').style.display = "block";
+						//document.getElementById('usdelid').innerHTML = cell.innerHTML;
+						//document.getElementById('usid').value = cell.innerHTML;
 						document.getElementById('2').style.display = "none";
-						document.getElementById('myalert').style.display = "none";
+						//document.getElementById('myalert').style.display = "none";
 						setDefaultvalues();
+						var action = "removeAssetDetail.html?op=deleteAsset&id="+ rowNum;
+						//alert("action---->"+action);
+						document.forms[1].action = action;
+						document.forms[1].method = "POST"
+						document.forms[1].submit();
 
 					}
 				}
@@ -414,7 +402,6 @@
 			<script type="text/javascript">
 				var resTxt;
 				function fetchAsset(action, assetId) {
-					alert("in fetchAsset : "+assetId)     
 					var action1 = action;
 					xmlHttp = createXMLHttpRequest(xmlHttp);
 					var url = createQueryString(action1, assetId);
@@ -441,7 +428,6 @@
 				}
 	
 				function setValues() {
-					alert("resTxt : "+resTxt)   
 					var entry = resTxt.split("###");
 					for (var i = 0; i < entry.length; i++) {
 						var values = entry[i].split("***");
@@ -455,24 +441,21 @@
 			<script type="text/javascript">
 				function assetDelete() {
 					var assetId = document.getElementById('usid');
-					alert("Delete assetId.value-------->"+assetId.value);
 					var action = "removeAssetDetail.html?op=deleteAsset&id="+ assetId.value;
 					document.forms[1].action = action;
-					document.forms[1].method = "post"
+					document.forms[1].method = "get"
 					document.forms[1].submit();
 				}
 			
 				function notDelete() {
 					document.getElementById('delalert').style.display = "none";
-					overlay2();
 				}
 			</script>
 
 
 </head>
 <body>
-	<jsp:include page="/WEB-INF/views/public/include_header.jsp" />
-		<div id="breadcrumb">
+		<%-- <div id="breadcrumb">
 		    <ul>
 		      <li class="first"><fmt:message key="breadcrumb.tag"/></li>
 		      <li>&#187;</li>
@@ -480,82 +463,7 @@
 		      <li>&#187;</li>
 		      <li class="current"><fmt:message key="breadcrumb.tag.asset.msg"/></li>
 		    </ul>
-		</div>
-		
-		
-			<!-- START Div overlay -->
-			<div id="overlay"
-				style="visibility: hidden; position: absolute; left: 0px; top: 0px; width: 100%; height: 300%; z-index: 190">
-				<DIV id=myalert
-					style="background-color: #ffffff; BORDER-RIGHT: #999999 1px solid; BORDER-TOP: #999999 1px solid; DISPLAY: none; Z-INDEX: 100; LEFT: 400px; BORDER-LEFT: #999999 1px solid; WIDTH: 327px; BORDER-BOTTOM: #999999 1px solid">
-					<DIV id=layer2 style="Z-INDEX: 101; LEFT: 0px; WIDTH: 325px; POSITION: relative; TOP: 0px; HEIGHT: 21px; BACKGROUND-COLOR: #d5e2f0" align=center>
-						<B><FONT face=Calibri size=2>Alert!</FONT></B>
-					</DIV>
-					<DIV id=layer3 style="Z-INDEX: 102; LEFT: 6px; WIDTH: 315px; POSITION: relative; TOP: 30px; HEIGHT: 131px">
-						<FONT face=Calibri size=2><IMG height=50
-							src="<%=request.getContextPath()%>/skin/images/user_icon.gif" width=50 border=0>&nbsp;
-							Are you sure you want to save changes to<BR>
-							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							the product?&nbsp;</FONT>
-						<P>
-							<FONT face=Calibri size=2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								&nbsp;&nbsp; 
-							</FONT>
-								<INPUT
-								style="COLOR: #000000; FONT-FAMILY: Calibri; BACKGROUND-COLOR: #a2c0df"
-								type=button
-								onclick="showalert();SaveupdateUserAJAX();setDefaultvalues();"
-								value="OK" name="B7";>
-								<FONT face=Calibri size=2>&nbsp;
-								</FONT>
-							<INPUT
-								style="COLOR: #000000; FONT-FAMILY: Calibri; BACKGROUND-COLOR: #a2c0df"
-								type=button value=Cancel onclick="showalert();setDefaultvalues();"
-								name=B8;>
-						</P>
-					</DIV>
-					<P>&nbsp;</P>
-				</DIV>
-		
-			</div>
-			<!-- End Div overlay -->
-
-
-
-			<!-- STERT Div overlay -->
-			<div id="overlay2"
-				style="visibility: hidden; position: absolute; left: 0px; top: 0px; width: 100%; height: 300%; z-index: 190">
-				<DIV id=delalert
-					style="background-color: #ffffff; BORDER-RIGHT: #999999 1px solid; BORDER-TOP: #999999 1px solid; DISPLAY: none; Z-INDEX: 103; LEFT: 400px; BORDER-LEFT: #999999 1px solid; WIDTH: 327px; BORDER-BOTTOM: #999999 1px solid">
-					<DIV id=layer4
-						style="Z-INDEX: 104; LEFT: 0px; WIDTH: 325px; POSITION: relative; TOP: 0px; HEIGHT: 21px; BACKGROUND-COLOR: #d5e2f0"
-						align=center>
-						<B><FONT face=Calibri size=2>Alert!</FONT></B>
-					</DIV>
-		
-					<DIV id=layer5
-						style="Z-INDEX: 105; LEFT: 6px; WIDTH: 315px; POSITION: relative; TOP: 30px; HEIGHT: 131px">
-						<FONT face=Calibri size=2><IMG height=50
-							src="<%=request.getContextPath()%>/skin/images/user_icon.gif" width=50 border=0>&nbsp;
-							Are you sure you want to delete User:
-							<div id="usdelid"></div> <input type="hidden" id="usid"> </FONT>
-						<P>
-							<FONT face=Calibri size=2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								&nbsp;&nbsp; </FONT><INPUT
-								style="COLOR: #000000; FONT-FAMILY: Calibri; BACKGROUND-COLOR: #a2c0df"
-								onclick="assetDelete();" type="button" value="OK" name="B7";><FONT
-								face=Calibri size=2>&nbsp; </FONT><INPUT
-								style="COLOR: #000000; FONT-FAMILY: Calibri; BACKGROUND-COLOR: #a2c0df"
-								onclick="notDelete();" type=button value=Cancel name=B8;>
-						</P>
-					</DIV>
-					<P>&nbsp;</P>
-				</DIV>
-			</div>
-			<!-- End Div overlay -->
-
-
-
+		</div> --%>
 
 	<div id="dataview" style="position: relative; float: left width :   100%; height: 20%; background-color: #ffffff; padding: 12px 12px 12px 0px">
 			<form name="myform" id="myform">
@@ -568,13 +476,16 @@
 
 				<div id="tablediv">	
 	
-					 <display:table id="usertable" name="<%=Constants.ASSET_LIST %>" class="list" sort="page" pagesize="5"  decorator="org.displaytag.decorator.TotalTableDecorator" export="true" requestURI="assetDetails.html"  >
-				   	 <display:column title="Edit/Delete"  paramProperty="id" paramId="id"><a href="javascript:checkRow(${usertable_rowNum});"><img src="<%=request.getContextPath()%>/skin/images/edit_icon.gif" title="Edit" border="0"></a><img src="<%=request.getContextPath()%>/skin/images/spacer.gif" width="4" height="1">
-				   			<a href="javascript:checkDelete(${usertable_rowNum});"><img src="<%=request.getContextPath()%>/skin/images/remove_icon.gif" title="Remove" border="0"></a>
+					 <display:table id="usertable" name="<%=Constants.ASSET_LIST %>" class="list" sort="page" pagesize="5" export="true" requestURI="assetDetails.html"  >
+				   	 <display:column title="Edit/Delete"  paramProperty="id" paramId="id"><a href="javascript:checkRow(${usertable_rowNum});">
+				   	 <img src="<%=request.getContextPath()%>/skin/images/edit_icon.gif" title="Edit" border="0">
+				   	 </a><img src="<%=request.getContextPath()%>/skin/images/spacer.gif" width="4" height="1">
+				   			<a href="javascript:checkDelete(${usertable_rowNum});">
+				   			<img src="<%=request.getContextPath()%>/skin/images/remove_icon.gif" title="Remove" border="0"></a>
 				   	 </display:column>
 					 <display:column property="id" sortable="true" title="Id"/>
 				     <display:column property="assetName" title="Asset Name" sortable="true" sortProperty="assetName"/>
-				     <display:column property="assetShortDescription" sortable="true" title="Asset Short Description"/>
+				    <%--  <display:column property="assetShortDescription" sortable="true" title="Asset Short Description"/> --%>
 				     <display:column property="projectName" title="Project Name" sortable="true" />
 				     <display:column property="registeredInAssetPortal" title="Registered In Asset Portal" sortable="true" />
 				     <display:column property="reusedInOtherProjectsName" title="Reused In Other Projects Name" sortable="true" />
@@ -591,173 +502,102 @@
 			
 			<!-- 1st div ends-->
 			<!-- 2nd div start here-->
-			<div id="2" style="position: relative;float: left;background-color:#ffffff;BORDER-RIGHT: #999999 2px solid; BORDER-TOP: #999999 2px solid; DISPLAY: none; Z-INDEX: 10;  BORDER-LEFT: #999999 2px solid; WIDTH: 80%; BORDER-BOTTOM: #999999 2px solid">
-				<form >		
-					<table border="0" width="100%" cellspacing="0" cellpadding="0">
-						<tr>
-							<td width="12">&nbsp;</td>
-							<td valign="top" colspan="3">
-							<table border="0" width="100%" cellpadding="0" cellspacing="0">
-						
-						<tr>
-							<td align="right" width="12">&nbsp;</td>
-							<td align="right"><b>Aset Details:</b></td>
-							<td width="4">&nbsp;</td>
-							<td></td>
-					
-									  <td width="40%">&nbsp;</td>
-							<td align="right"></td>
-							<td align="right" width="4">&nbsp;</td>
-							<td align="right"  width="100%">
-							<img src="<%=request.getContextPath()%>/skin/images/spacer.gif" width="4" height="1">
-							<img src="<%=request.getContextPath()%>/skin/images/spacer.gif" width="4" height="1">
-							<img src="<%=request.getContextPath()%>/skin/images/spacer.gif" width="4" height="1">
-							<a onclick="javascript:IsValid('myalert');" name="B11" id="alertbutton"  >
-							<img src="<%=request.getContextPath()%>/skin/images/save_update_normal.gif"   > 
-							</a>
-							<a onclick="javascript:closeForm();" >
-							<img src="<%=request.getContextPath()%>/skin/images/popup_header_close_button.gif"  >
-							</a></td>
-						</tr>
-						
-						<tr>
-							<td align="right" width="12" height="5">
-							</td>
-							<td align="right" height="5"></td>
-							<td width="4" height="5"></td>
-							<td height="5"></td>
-							<td width="40%" height="5"></td>
-							<td align="right" height="5"></td>
-							<td align="right" width="4" height="5"></td>
-							<td width="100%" height="5">
-							</td>
-						</tr>
-						
-						<tr>
-							<td align="right" height="4" width="12"></td>
-							<td align="right" height="4"></td>
-							<td width="4" height="4"></td>
-							<td height="4"></td>
-							<td width="40%" height="4"></td>
-							<td height="4" align="right"></td>
-							<td height="4" align="right" width="4"></td>
-							<td height="4" width="100%"></td>
-						</tr>
-						
-						<tr>
-							<td align="right" width="12">&nbsp;</td>
-							<td align="right"><nobr>Asset Name<font color="red">*</font>:</nobr></td>
-							<td width="4">&nbsp;</td>
-							<td><nobr>
-							<input type="text" size="20"  Id="assetName"/>
-									  <td width="40%">&nbsp;</td>
-							<td align="right"><nobr>Asset Short Description<font color="red">*</font>:</nobr></td>
-							<td align="right" width="4">&nbsp;</td>
-							<td width="100%">
-							<input type="text" size="20"  Id="assetShortDescription"/></td>
-						</tr>
-						<tr>
-							<td align="right" height="4" width="12"></td>
-							<td align="right" height="4"></td>
-							<td width="4" height="4"></td>
-							<td height="4"></td>
-							<td width="40%" height="4"></td>
-							<td height="4" align="right"></td>
-							<td height="4" align="right" width="4"></td>
-							<td height="4" width="100%"></td>
-						</tr>
-						<tr>
-							<td align="right" width="12"></td>
-							<td align="right"><nobr>Project Name<font color="red">*</font>:</nobr></td>
-							<td width="4">&nbsp;</td>
-							<td><nobr>
-							<input type="text" size="20"  Id="projectName"/>
-										</td>
+	<div id="2"
+		style="position: relative; float: left; background-color: #ffffff; BORDER-RIGHT: #999999 2px solid; BORDER-TOP: #999999 2px solid; DISPLAY: none; Z-INDEX: 10; BORDER-LEFT: #999999 2px solid; WIDTH: 80%; BORDER-BOTTOM: #999999 2px solid">
+		<form method="POST" action="saveAssetDetails.html" name="assetDetailsForm">
+			<h1 align="left">
+				<b><font face="THE TIMES NEW ROMAN" size="4">Asset Details:</font></b>
+			</h1>
+			<table width=100% frame="box">
+				<tr>
+					<td align="right"><nobr>
+							<font face="THE TIMES NEW ROMAN" color="#0B2F3A" size="2">Asset
+								Name*:</font>
+						</nobr></td>
+					<td width="4">&nbsp;</td>
+					<td><nobr>
+							<input type="text" size="20" Id="assetName" name="assetName"/>
 							<td width="40%">&nbsp;</td>
-							<td align="right"><nobr>Registered In Asset Portal<font color="red">*</font>:</nobr></td>
-							<td align="right" width="4">&nbsp;</td>
-							<td width="100%">
-							<input type="text" size="15"  Id="registeredInAssetPortal" />
-							<div id="responseDiv"></div>
-							</td>
-						</tr>
-						<tr>
-							<td align="right" width="12" height="4"></td>
-							<td align="right" height="4"></td>
-							<td width="4" height="4"></td>
-							<td height="4"></td>
-							<td width="40%" height="4"></td>
-							<td align="right" height="4"></td>
-							<td align="right" width="4" height="4"></td>
-							<td width="100%" height="4">
-							</td>
-						</tr>
-	
-						<tr>
-							<td align="right" width="12">&nbsp;</td>
-							<td align="right"><nobr>Reused In Other Projects Name<font color="red">*</font>:</nobr></td>
+
+
+							<td align="right"><nobr>
+									<font face="THE TIMES NEW ROMAN" color="#0B2F3A" size="2">Asset
+										Creation*:</font>
+								</nobr></td>
+							<td width="4">&nbsp;</td>
+
+							<td><nobr>
+									<input type="date" size="20" Id="creationDate" name="creationDate" />
+									<td width="40%">&nbsp;</td>
+				</tr>
+				<tr>
+					<td align="right"><nobr>
+							<font face="THE TIMES NEW ROMAN" color="#0B2F3A" size="2">Project
+								Name*:</font>
+						</nobr></td>
+					<td width="4">&nbsp;</td>
+					<td><nobr>
+
+							<input type="text" size="20" Id="projectName" name="projectName"/>
+							<td width="40%">&nbsp;</td>
+							<td align="right"><nobr>
+									<font face="THE TIMES NEW ROMAN" color="#0B2F3A" size="2">Reused
+										in other projects name*:</font>
+								</nobr></td>
 							<td width="4">&nbsp;</td>
 							<td><nobr>
-							<input type="text" size="20"  Id="reusedInOtherProjectsName"/>
-									  <td width="40%">&nbsp;</td>
-							<td align="right"><nobr>Effort Save<font color="red">*</font>:</nobr></td>
-							<td align="right" width="4">&nbsp;</td>
-							<td width="100%">
-							<input type="text" size="20"  Id="effortSave"/></td>
-						</tr>
-						
-						<tr>
-							<td align="right" height="4" width="12"></td>
-							<td align="right" height="4"></td>
-							<td width="4" height="4"></td>
-							<td height="4"></td>
-							<td width="40%" height="4"></td>
-							<td height="4" align="right"></td>
-							<td height="4" align="right" width="4"></td>
-							<td height="4" width="100%"></td>
-						</tr>
-						
-						
-						<tr>
-							<td align="right" height="12" width="12"></td>
-							<td align="right" height="12"></td>
-							<td width="4" height="12"></td>
-							<td height="12"></td>
-							<td width="40%" height="12"></td>
-							<td height="12"></td>
-							<td height="12" width="4"></td>
-							<td width="100%" height="12"></td>
-						</tr>
-						
-						<tr>
-							<td align="right" height="5" width="12"></td>
-							<td align="right" height="5"></td>
-							<td width="4" height="5"></td>
-							<td height="5"></td>
-							<td width="40%" height="5"></td>
-							<td height="5"></td>
-							<td height="5" width="4"></td>
-							<td width="100%" height="5"></td>
-						</tr>
-						
-											
-						</table>
-						</td>
-							<td width="12">&nbsp;</td>
-						</tr>
-						<tr>
-							<td width="12">&nbsp;</td>
-							<td width="45%" valign="top">&nbsp;</td>
-							<td width="20">&nbsp;</td>
-							<td width="45%" valign="top">&nbsp;</td>
-							<td width="12">&nbsp;</td>
-						</tr>
-						
-						<tr><td colspan="4" align="center">
-						<div id="resultDiv" align="center"></div></td></tr>
-					</table>
-					<input type="hidden" Id="assetId" />
-			</form>
-		</div>
-	</body>
+									<input type="text" size="20" Id="reusedInOtherProjectsName" name="reusedInOtherProjectsName"/>
+									<td width="40%">&nbsp;</td>
+				</tr>
+				<tr>
+					<td align="right"><nobr>
+							<font face="THE TIMES NEW ROMAN" color="#0B2F3A" size="2">Asset
+								Description*:</font>
+						</nobr></td>
+					<td width="4">&nbsp;</td>
+					<td><nobr>
+							<textarea wrap="virtual" name="assetShortDescription" id="assetShortDescription" rows=2 cols=31></textarea>
+							<br>
+							<td width="40%">&nbsp;</td>
+							<td align="right"><nobr>
+									<font face="THE TIMES NEW ROMAN" color="#0B2F3A" size="2">Effort
+										Save*:</font>
+								</nobr></td>
+							<td width="4">&nbsp;</td>
+							<td><nobr>
+									<input type="text" size="20" Id="effortSave" name="effortSave"/>
+									<td width="40%">&nbsp;</td>
+				</tr>
+				<tr>
+
+
+					<td align="right"><nobr>
+							<font face="THE TIMES NEW ROMAN" color="#0B2F3A" size="2"></font>
+						</nobr></td>
+					<td width="4">&nbsp;</td>
+					<td><nobr>
+
+							<td width="40%">&nbsp;</td>
+
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<td align="right"><nobr>
+									<font face="THE TIMES NEW ROMAN" color="#0B2F3A" size="2">Registered
+										in Asset Portal*:</font>
+								</nobr></td>
+							<td width="4">&nbsp;</td>
+							<td><nobr>
+									<input type="text" size="20" Id="registeredInAssetPortal" name="registeredInAssetPortal"/>
+									<td width="40%">&nbsp;</td>
+				</tr>
+
+
+
+				<tr>
+					<td><input type="button" value="Save/Update" style="margin-left: 350%;" onclick="javascript:IsValid();"></td>
+				</tr>
+			</table>
+			<input type="hidden" Id="assetId" name="assetId"/>
+	</form>
+	</div>
+</body>
  </html>

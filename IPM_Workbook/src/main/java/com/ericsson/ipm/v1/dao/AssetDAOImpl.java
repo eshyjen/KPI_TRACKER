@@ -223,4 +223,11 @@ public class AssetDAOImpl extends BaseDAO<Integer, Asset> implements AssetDAO {
 		}
 	}
 
+	@Override
+	public void remove(String assetId) {
+		Integer asset_id = Integer.parseInt(assetId);
+		Asset entity = findById(asset_id);
+		remove(entity);
+	}
+
 }

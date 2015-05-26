@@ -18,7 +18,7 @@
 <script type="text/javascript" src="${rootURL}/resources/js/app.js"></script>
 </head>
 <body>
-		<jsp:include page="/WEB-INF/views/public/include_header.jsp" />
+		
 		<div class="col-md-6 col-md-offset-2">	
 		<c:if test="${param.error != null}">
              <div class="alert alert-danger">

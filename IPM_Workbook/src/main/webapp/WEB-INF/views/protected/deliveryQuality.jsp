@@ -9,6 +9,7 @@
 	
 	<%@page import="com.ericsson.v1.util.Constants"%>
 	<%@include file="/WEB-INF/views/public/taglib.jsp"%>
+	<%@include file="/WEB-INF/views/public/include_header.jsp" %>
 	<fmt:setBundle basename="messages" />
 <html>
 	<head>
@@ -22,16 +23,37 @@
 			<script type="text/javascript"
 				src="${rootURL}/resources/bootstrap/js/bootstrap.js"></script>
 			<script type="text/javascript" src="${rootURL}/resources/js/app.js"></script>
-			
-			<script type="text/javascript">
+		
+		<script type="text/javascript">
+		var datefield = document.createElement("input")
+		datefield.setAttribute("type", "date")
+		if (datefield.type != "date") { //if browser doesn't support input type="date", load files for jQuery UI Date Picker
+			document
+					.write('<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />\n')
+			document
+					.write('<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"><\/script>\n')
+			document
+					.write('<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"><\/script>\n')
+		}
+	</script>
+	<script type="text/javascript">
+		if (datefield.type != "date") { //if browser doesn't support input type="date", initialize date picker widget:
+			jQuery(function($) { //on document.ready
+				$('#dqiDate').datepicker();
+			})
+		}
+	</script>
+		
+		<script type="text/javascript">
 			
 				function addformChanged() {
-					var checkflag = checkDisTable();
+					//var checkflag = checkDisTable();
 					//alert("checkflag "+checkflag);
-					if (checkflag == true) {
+					//if (checkflag == true) {
+						alert("addformChanged ");
 						showBlank();
 						setDefaultvalues();
-					}
+					//}
 				}
 				
 				function setDefaultvalues() {
@@ -135,8 +157,7 @@
 				}
 
 				function showBlank() {
-					//alert("in showBlank");
-					
+					document.getElementById("projectName").value = "";
 					document.getElementById("projectType").value = "";
 					document.getElementById("dqiScore").value = "";
 					document.getElementById("dpiScore").value = "";
@@ -144,15 +165,13 @@
 					document.getElementById("pmOrSpmName").value = "";
 					document.getElementById("tlName").value = "";
 					document.getElementById("swArchitectName").value = "";
-
 					document.forms[1].elements["deliveryQualityId"].value = "";
-					window.document.getElementById("resultDiv").innerHTML = "";
-					window.document.getElementById("responseDiv").innerHTML = "";
+					//window.document.getElementById("resultDiv").innerHTML = "";
+					//window.document.getElementById("responseDiv").innerHTML = "";
 					document.getElementById('1').style.display = "none";
 					document.getElementById('2').style.display = "block";
-
-					var addbtnobj = document.getElementById("add");
-					showDiv2(addbtnobj, "2");
+					//var addbtnobj = document.getElementById("add");
+					//showDiv2(addbtnobj, "2");
 				}
 				
 				function closeForm() {
@@ -165,9 +184,10 @@
 			
 			<script type="text/javascript">
 			
-				function IsValid(id) {
+				function IsValid() {
 					if (isEmpty()) {
-						showSaveDiv();
+						//showSaveDiv();
+						document.deliveryQualityForm.submit();
 					}
 				}
 				
@@ -175,12 +195,13 @@
 					
 					var formfield = "";
 					var str = document.getElementById("projectType").value;
-					if (document.getElementById("projectType").value == "") {
+					
+					if (document.getElementById("projectType").value == "")
 						formfield = "Project Type";
-					}
-					if (document.getElementById("dqiScore").value == "") {
+					if (document.getElementById("projectName").value == "") 
+						formfield = "Project Name";
+					if (document.getElementById("dqiScore").value == "")
 						formfield = formfield + "\n" + "DQI Score";
-					}
 					if (document.getElementById("dpiScore").value == "")
 						formfield = formfield + "\n" + "DPI Score";
 					if (document.getElementById("dqiDate").value == "")
@@ -196,56 +217,6 @@
 					} else {
 						alert("Required Fields :  \n" + formfield);
 						return false;
-					}
-				}
-				
-				
-				function showSaveDiv() {
-					//alert("showSaveDiv");
-					var leftVal = document.getElementById('2').style.left;
-					var topVal = document.getElementById('2').style.top;
-					var screenMids = screen.width / 2;
-					var curleftObjs = screenMids - 165;
-					var pos = topVal.indexOf('px');
-					topStr = topVal.substring(0, pos);
-					var topInt = parseInt(topStr) + 50;
-					document.getElementById('myalert').style.display = 'block';
-					document.getElementById('myalert').style.position = "relative";
-					document.getElementById('myalert').style.left = curleftObjs
-							+ "px";
-					document.getElementById('myalert').style.top = topInt
-							+ "px";
-					document.getElementById('2').style.position = "absolute";
-					document.getElementById('2').style.left = leftVal;
-					document.getElementById('2').style.top = topVal;
-					overlay();
-
-				}
-			</script>
-			
-			<script type="text/javascript">
-				function overlay() {
-					el = document.getElementById("overlay");
-					el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
-				}
-			</script>
-			
-			<script type="text/javascript">
-				function overlay2() {
-					el = document.getElementById("overlay2");
-					el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
-				}
-			</script>
-
-			<script type="text/javascript">
-				function showalert() {
-					overlay();
-					if (document.getElementById('myalert').style.display == "block") {
-						document.getElementById('myalert').style.display = "none";
-			
-					} else {
-						document.getElementById('myalert').style.display = "block";
-			
 					}
 				}
 			</script>
@@ -298,16 +269,9 @@
 				}
 				function createGETQueryString() {
 					
-					//document.getElementById("projectType").value = "";
-					//document.getElementById("dqiScore").value = "";
-					//document.getElementById("dpiScore").value = "";
-					//document.getElementById("dqiDate").value = "";
-					//document.getElementById("pmOrSpmName").value = "";
-					//document.getElementById("tlName").value = "";
-					//document.getElementById("swArchitectName").value = "";
-					
 					var deliveryQualityId = document.getElementById("deliveryQualityId").value;
 					var projectType = document.getElementById("projectType").value;
+					var projectName = document.getElementById("projectName").value;
 					var dqiScore = document.getElementById("dqiScore").value;
 					var dpiScore = document.getElementById("dpiScore").value;
 					var dqiDate = document.getElementById("dqiDate").value;
@@ -316,8 +280,9 @@
 					var swArchitectName = document.getElementById("swArchitectName").value;
 			
 					//creating the Query String
-					var qryString = "id=" + deliveryQualityId;
+					var qryString = "deliveryQualityId=" + deliveryQualityId;
 					qryString = qryString + "&projectType=" + projectType;
+					qryString = qryString + "&projectName=" + projectName;
 					qryString = qryString + "&dqiScore=" + dqiScore;
 					qryString = qryString + "&dpiScore=" + dpiScore;
 					qryString = qryString + "&dqiDate=" + dqiDate;
@@ -353,8 +318,6 @@
 				}
 
 				function checkRow(rowid) {
-					// var pageNum=document.getElementById("recordsperpage").value ;
-					alert("value---->"+rowid);
 					var pageNum = 5;
 					var id = rowid;
 
@@ -375,9 +338,9 @@
 							document.getElementById('1').style.display = "none";
 							//document.getElementById('2').style.display="block";
 
-							if (document.getElementById('myalert').style.display == "block") {
-								document.getElementById('myalert').style.display = "none";
-							}
+							//if (document.getElementById('myalert').style.display == "block") {
+								//document.getElementById('myalert').style.display = "none";
+							//}
 							showDivDetails(cell);
 
 							//action = "userListAction.do?method=ajaxedit&userid="  ;
@@ -393,7 +356,6 @@
 				function checkDelete(rowNum) {
 					overlay2();
 					//var pageNum=document.getElementById("recordsperpage").value ;
-					alert("rowNum---->"+rowNum);
 					var pageNum = 5;
 					var id = rowNum;
 					var table = document.getElementById("usertable");
@@ -407,13 +369,18 @@
 					var flag1 = checkDisTable();
 					alert("flag1---->"+flag1);
 					if (flag1 == true) {
-						showDiv2(rows[id], 'delalert');
-						document.getElementById('delalert').style.display = "block";
-						document.getElementById('usdelid').innerHTML = cell.innerHTML;
-						document.getElementById('usid').value = cell.innerHTML;
+						//showDiv2(rows[id], 'delalert');
+						//document.getElementById('delalert').style.display = "block";
+						//document.getElementById('usdelid').innerHTML = cell.innerHTML;
+						//document.getElementById('usid').value = cell.innerHTML;
 						document.getElementById('2').style.display = "none";
-						document.getElementById('myalert').style.display = "none";
+						//document.getElementById('myalert').style.display = "none";
 						setDefaultvalues();
+						var action = "removeDeliveryQualityDetail.html?op=deleteDeliveryQualityDetail&id="+ rowNum;
+						//alert("action---->"+action);
+						document.forms[1].action = action;
+						document.forms[1].method = "POST"
+						document.forms[1].submit();
 
 					}
 				}
@@ -479,91 +446,6 @@
 
 </head>
 <body>
-	<jsp:include page="/WEB-INF/views/public/include_header.jsp" />
-		<div id="breadcrumb">
-		    <ul>
-		      <li class="first"><fmt:message key="breadcrumb.tag"/></li>
-		      <li>&#187;</li>
-		      <li><a href='<c:out value="${homeUrl}"/>'><fmt:message key="breadcrumb.tag.home"/></a></li>
-		      <li>&#187;</li>
-		      <li class="current"><fmt:message key="breadcrumb.tag.asset.msg"/></li>
-		    </ul>
-		</div>
-		
-		
-			<!-- START Div overlay -->
-			<div id="overlay"
-				style="visibility: hidden; position: absolute; left: 0px; top: 0px; width: 100%; height: 300%; z-index: 190">
-				<DIV id=myalert
-					style="background-color: #ffffff; BORDER-RIGHT: #999999 1px solid; BORDER-TOP: #999999 1px solid; DISPLAY: none; Z-INDEX: 100; LEFT: 400px; BORDER-LEFT: #999999 1px solid; WIDTH: 327px; BORDER-BOTTOM: #999999 1px solid">
-					<DIV id=layer2 style="Z-INDEX: 101; LEFT: 0px; WIDTH: 325px; POSITION: relative; TOP: 0px; HEIGHT: 21px; BACKGROUND-COLOR: #d5e2f0" align=center>
-						<B><FONT face=Calibri size=2>Alert!</FONT></B>
-					</DIV>
-					<DIV id=layer3 style="Z-INDEX: 102; LEFT: 6px; WIDTH: 315px; POSITION: relative; TOP: 30px; HEIGHT: 131px">
-						<FONT face=Calibri size=2><IMG height=50
-							src="<%=request.getContextPath()%>/skin/images/user_icon.gif" width=50 border=0>&nbsp;
-							Are you sure you want to save changes to<BR>
-							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							the product?&nbsp;</FONT>
-						<P>
-							<FONT face=Calibri size=2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								&nbsp;&nbsp; 
-							</FONT>
-								<INPUT
-								style="COLOR: #000000; FONT-FAMILY: Calibri; BACKGROUND-COLOR: #a2c0df"
-								type=button
-								onclick="showalert();SaveupdateUserAJAX();setDefaultvalues();"
-								value="OK" name="B7";>
-								<FONT face=Calibri size=2>&nbsp;
-								</FONT>
-							<INPUT
-								style="COLOR: #000000; FONT-FAMILY: Calibri; BACKGROUND-COLOR: #a2c0df"
-								type=button value=Cancel onclick="showalert();setDefaultvalues();"
-								name=B8;>
-						</P>
-					</DIV>
-					<P>&nbsp;</P>
-				</DIV>
-		
-			</div>
-			<!-- End Div overlay -->
-
-
-
-			<!-- STERT Div overlay -->
-			<div id="overlay2"
-				style="visibility: hidden; position: absolute; left: 0px; top: 0px; width: 100%; height: 300%; z-index: 190">
-				<DIV id=delalert
-					style="background-color: #ffffff; BORDER-RIGHT: #999999 1px solid; BORDER-TOP: #999999 1px solid; DISPLAY: none; Z-INDEX: 103; LEFT: 400px; BORDER-LEFT: #999999 1px solid; WIDTH: 327px; BORDER-BOTTOM: #999999 1px solid">
-					<DIV id=layer4
-						style="Z-INDEX: 104; LEFT: 0px; WIDTH: 325px; POSITION: relative; TOP: 0px; HEIGHT: 21px; BACKGROUND-COLOR: #d5e2f0"
-						align=center>
-						<B><FONT face=Calibri size=2>Alert!</FONT></B>
-					</DIV>
-		
-					<DIV id=layer5
-						style="Z-INDEX: 105; LEFT: 6px; WIDTH: 315px; POSITION: relative; TOP: 30px; HEIGHT: 131px">
-						<FONT face=Calibri size=2><IMG height=50
-							src="<%=request.getContextPath()%>/skin/images/user_icon.gif" width=50 border=0>&nbsp;
-							Are you sure you want to delete User:
-							<div id="usdelid"></div> <input type="hidden" id="usid"> </FONT>
-						<P>
-							<FONT face=Calibri size=2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								&nbsp;&nbsp; </FONT><INPUT
-								style="COLOR: #000000; FONT-FAMILY: Calibri; BACKGROUND-COLOR: #a2c0df"
-								onclick="assetDelete();" type="button" value="OK" name="B7";><FONT
-								face=Calibri size=2>&nbsp; </FONT><INPUT
-								style="COLOR: #000000; FONT-FAMILY: Calibri; BACKGROUND-COLOR: #a2c0df"
-								onclick="notDelete();" type=button value=Cancel name=B8;>
-						</P>
-					</DIV>
-					<P>&nbsp;</P>
-				</DIV>
-			</div>
-			<!-- End Div overlay -->
-
-
-
 
 	<div id="dataview" style="position: relative; float: left width :   100%; height: 20%; background-color: #ffffff; padding: 12px 12px 12px 0px">
 			<form name="myform" id="myform">
@@ -576,12 +458,13 @@
 
 				<div id="tablediv">	
 	
-					 <display:table id="usertable" name="<%=Constants.DELIVERY_QUALITIY_LIST %>" class="list" sort="page" pagesize="5"  decorator="org.displaytag.decorator.TotalTableDecorator" export="true" requestURI="deliveryQualityDetails.html"  >
+					 <display:table id="usertable" name="<%=Constants.DELIVERY_QUALITIY_LIST %>" class="list" sort="page" pagesize="5"  export="true" requestURI="deliveryQualityDetails.html"  >
 				   	 <display:column title="Edit/Delete"  paramProperty="id" paramId="id"><a href="javascript:checkRow(${usertable_rowNum});"><img src="<%=request.getContextPath()%>/skin/images/edit_icon.gif" title="Edit" border="0"></a><img src="<%=request.getContextPath()%>/skin/images/spacer.gif" width="4" height="1">
 				   			<a href="javascript:checkDelete(${usertable_rowNum});"><img src="<%=request.getContextPath()%>/skin/images/remove_icon.gif" title="Remove" border="0"></a>
 				   	 </display:column>
 					 <display:column property="id" sortable="true" title="Id"/>
-				     <display:column property="projectType" title="Project Type" sortable="true" sortProperty="assetName"/>
+					  <display:column property="projectName" sortable="true" title="Project Name"/>
+				     <display:column property="projectType" title="Project Type" sortable="true" sortProperty="projectType"/>
 				     <display:column property="dqiScore" sortable="true" title="DQI Score"/>
 				     <display:column property="dpiScore" title="DPI Score" sortable="true" />
 				     <display:column property="dqiDate" title="DQI Date" sortable="true" />
@@ -601,179 +484,122 @@
 			<!-- 1st div ends-->
 			<!-- 2nd div start here-->
 			<div id="2" style="position: relative;float: left;background-color:#ffffff;BORDER-RIGHT: #999999 2px solid; BORDER-TOP: #999999 2px solid; DISPLAY: none; Z-INDEX: 10;  BORDER-LEFT: #999999 2px solid; WIDTH: 80%; BORDER-BOTTOM: #999999 2px solid">
-				<form >		
-					<table border="0" width="100%" cellspacing="0" cellpadding="0">
-						<tr>
-							<td width="12">&nbsp;</td>
-							<td valign="top" colspan="3">
-							<table border="0" width="100%" cellpadding="0" cellspacing="0">
-						
-						<tr>
-							<td align="right" width="12">&nbsp;</td>
-							<td align="right"><b>Aset Details:</b></td>
-							<td width="4">&nbsp;</td>
-							<td></td>
-					
-									  <td width="40%">&nbsp;</td>
-							<td align="right"></td>
-							<td align="right" width="4">&nbsp;</td>
-							<td align="right"  width="100%">
-							<img src="<%=request.getContextPath()%>/skin/images/spacer.gif" width="4" height="1">
-							<img src="<%=request.getContextPath()%>/skin/images/spacer.gif" width="4" height="1">
-							<img src="<%=request.getContextPath()%>/skin/images/spacer.gif" width="4" height="1">
-							<a onclick="javascript:IsValid('myalert');" name="B11" id="alertbutton"  >
-							<img src="<%=request.getContextPath()%>/skin/images/save_update_normal.gif"   > 
-							</a>
-							<a onclick="javascript:closeForm();" >
-							<img src="<%=request.getContextPath()%>/skin/images/popup_header_close_button.gif"  >
-							</a></td>
-						</tr>
-						
-						<tr>
-							<td align="right" width="12" height="5">
-							</td>
-							<td align="right" height="5"></td>
-							<td width="4" height="5"></td>
-							<td height="5"></td>
-							<td width="40%" height="5"></td>
-							<td align="right" height="5"></td>
-							<td align="right" width="4" height="5"></td>
-							<td width="100%" height="5">
-							</td>
-						</tr>
-						
-						<tr>
-							<td align="right" height="4" width="12"></td>
-							<td align="right" height="4"></td>
-							<td width="4" height="4"></td>
-							<td height="4"></td>
-							<td width="40%" height="4"></td>
-							<td height="4" align="right"></td>
-							<td height="4" align="right" width="4"></td>
-							<td height="4" width="100%"></td>
-						</tr>
-						
-						<tr>
-							<td align="right" width="12">&nbsp;</td>
-							<td align="right"><nobr>Project Type<font color="red">*</font>:</nobr></td>
-							<td width="4">&nbsp;</td>
-							<td><nobr>
-							<input type="text" size="20"  Id="projectType"/>
-									  <td width="40%">&nbsp;</td>
-							<td align="right"><nobr>DQI Score<font color="red">*</font>:</nobr></td>
-							<td align="right" width="4">&nbsp;</td>
-							<td width="100%">
-							<input type="text" size="20"  Id="dqiScore"/></td>
-						</tr>
-						<tr>
-							<td align="right" height="4" width="12"></td>
-							<td align="right" height="4"></td>
-							<td width="4" height="4"></td>
-							<td height="4"></td>
-							<td width="40%" height="4"></td>
-							<td height="4" align="right"></td>
-							<td height="4" align="right" width="4"></td>
-							<td height="4" width="100%"></td>
-						</tr>
-						<tr>
-							<td align="right" width="12"></td>
-							<td align="right"><nobr>DPI Score<font color="red">*</font>:</nobr></td>
-							<td width="4">&nbsp;</td>
-							<td><nobr>
-							<input type="text" size="20"  Id="dpiScore"/>
-										</td>
+				<form name="deliveryQualityForm" id="deliveryQualityForm" style="margin-left: 20px;
+						margin-top: 20px;
+						margin-right: 20px;
+						margin-bottom: 20px; padding: 8px;" method="POST"><br> <br>
+
+			<table width=50% frame="box"
+				style="margin-left: 20px; margin-top: 20px; margin-right: 20px; margin-bottom: 20px; padding: 30px 30px 30px 30px;">
+				<br>
+				<br>
+
+
+				<tr>
+					<td align="right"><nobr>
+							<font face="THE TIMES NEW ROMAN" color="#0B2F3A" name="ID"
+								id="id1" size="4">Project Name*:</font>
+						</nobr></td>
+					<td width="4">&nbsp;</td>
+					<td><nobr>
+							<input type="text" name="projectName" id="projectName" /><font color="red"><span
+								id="msg"></span></font>
 							<td width="40%">&nbsp;</td>
-							<td align="right"><nobr>DQI Date<font color="red">*</font>:</nobr></td>
-							<td align="right" width="4">&nbsp;</td>
-							<td width="100%">
-							<input type="text" size="15"  Id="dqiDate" />
-							<div id="responseDiv"></div>
-							</td>
-						</tr>
-						<tr>
-							<td align="right" width="12" height="4"></td>
-							<td align="right" height="4"></td>
-							<td width="4" height="4"></td>
-							<td height="4"></td>
-							<td width="40%" height="4"></td>
-							<td align="right" height="4"></td>
-							<td align="right" width="4" height="4"></td>
-							<td width="100%" height="4">
-							</td>
-						</tr>
-	
-						<tr>
-							<td align="right" width="12">&nbsp;</td>
-							<td align="right"><nobr>PM/SPM Name<font color="red">*</font>:</nobr></td>
+							<nobr>
+
+
+
+								<td align="right"><nobr>
+										<font face="THE TIMES NEW ROMAN" color="#0B2F3A" size="4"
+											name="PROJECT_TYPE" id="projectType1">Project Type*:</font>
+									</nobr></td>
+								<td width="4">&nbsp;</td>
+								<td><nobr>
+
+										<input type="text" size="20" Id="projectType" />
+										<td width="40%">&nbsp;</td>
+									</nobr>
+				</tr>
+
+
+				<tr>
+					<td align="right"><nobr>
+							<font face="THE TIMES NEW ROMAN" color="#0B2F3A" size="4"
+								name="DQI_SCORE" id="dqiScore1">DQI Score*:</font>
+						</nobr></td>
+					<td width="4">&nbsp;</td>
+					<td><nobr>
+
+							<input type="text" size="20" Id="dqiScore"/>
+							<td width="40%">&nbsp;</td>
+
+
+							<td align="right"><nobr>
+									<font face="THE TIMES NEW ROMAN" color="#0B2F3A" size="4"
+										name="DPI_SCORE" id="dpiScore1">DPI Score*:</font>
+								</nobr></td>
 							<td width="4">&nbsp;</td>
 							<td><nobr>
-							<input type="text" size="20"  Id="pmOrSpmName"/>
-									  <td width="40%">&nbsp;</td>
-							<td align="right"><nobr>TL Name<font color="red">*</font>:</nobr></td>
-							<td align="right" width="4">&nbsp;</td>
-							<td width="100%">
-							<input type="text" size="20"  Id="tlName"/></td>
-						</tr>
-						
-						<tr>
-							<td align="right" height="4" width="12"></td>
-							<td align="right" height="4"></td>
-							<td width="4" height="4"></td>
-							<td height="4"></td>
-							<td width="40%" height="4"></td>
-							<td height="4" align="right"></td>
-							<td height="4" align="right" width="4"></td>
-							<td height="4" width="100%"></td>
-						</tr>
-						
-						<tr>
-							<td align="right" width="12">&nbsp;</td>
-							<td align="right"><nobr>SW Architect Name<font color="red">*</font>:</nobr></td>
+
+									<input type="text" size="20" Id="dpiScore"
+										 />
+									<td width="40%">&nbsp;</td>
+				</tr>
+
+
+				<tr>
+					<td align="right"><nobr>
+							<font face="THE TIMES NEW ROMAN" color="#0B2F3A" size="4"
+								name="DATE" id="date">Date*:</font>
+						</nobr></td>
+					<td width="4">&nbsp;</td>
+
+					<td><nobr>
+							<input type="date" size="20" Id="dqiDate" name="dqiDate"
+								 />
+							<td width="40%">&nbsp;</td>
+
+
+							<td align="right"><nobr>
+									<font face="THE TIMES NEW ROMAN" color="#0B2F3A" size="4"
+										name="PM_OR_SPM_NAME" id="pmOrSpmName1">PM/SPM Name*:</font>
+								</nobr></td>
 							<td width="4">&nbsp;</td>
 							<td><nobr>
-							<input type="text" size="20"  Id="swArchitectName"/>
-						</tr>
-						
-						
-						<tr>
-							<td align="right" height="12" width="12"></td>
-							<td align="right" height="12"></td>
-							<td width="4" height="12"></td>
-							<td height="12"></td>
-							<td width="40%" height="12"></td>
-							<td height="12"></td>
-							<td height="12" width="4"></td>
-							<td width="100%" height="12"></td>
-						</tr>
-						
-						<tr>
-							<td align="right" height="5" width="12"></td>
-							<td align="right" height="5"></td>
-							<td width="4" height="5"></td>
-							<td height="5"></td>
-							<td width="40%" height="5"></td>
-							<td height="5"></td>
-							<td height="5" width="4"></td>
-							<td width="100%" height="5"></td>
-						</tr>
-						
-											
-						</table>
-						</td>
-							<td width="12">&nbsp;</td>
-						</tr>
-						<tr>
-							<td width="12">&nbsp;</td>
-							<td width="45%" valign="top">&nbsp;</td>
-							<td width="20">&nbsp;</td>
-							<td width="45%" valign="top">&nbsp;</td>
-							<td width="12">&nbsp;</td>
-						</tr>
-						
-						<tr><td colspan="4" align="center">
-						<div id="resultDiv" align="center"></div></td></tr>
-					</table>
-					<input type="hidden" Id="deliveryQualityId" />
+									<input type="text" size="20" Id="pmOrSpmName"
+										 />
+									<td width="40%">&nbsp;</td>
+				</tr>
+
+				<tr>
+					<td align="right"><nobr>
+							<font face="THE TIMES NEW ROMAN" color="#0B2F3A" size="4"
+								name="TL_NAME" id="tlName1">TL name*:</font>
+						</nobr></td>
+					<td width="4">&nbsp;</td>
+					<td><nobr>
+							<input type="text" size="20" Id="tlName"
+								 />
+							<td width="40%">&nbsp;</td>
+
+							<td align="right"><nobr>
+									<font face="THE TIMES NEW ROMAN" color="#0B2F3A" size="4"
+										name="SW_ARCHITECT_NAME" id="swArchitechtName1">SW
+										Architect Name*:</font>
+								</nobr></td>
+							<td width="4">&nbsp;</td>
+							<td><nobr>
+									<input type="text" size="20" Id="swArchitectName"
+										/>
+									<td width="40%">&nbsp;</td>
+				</tr>
+				<tr>
+					<td><input type="submit" value="Save/Update"
+						style="margin-left: 250%;" onclick="javascript:IsValid();"></td>
+				</tr>
+			</table>
+
+			<input type="hidden" Id="deliveryQualityId" />
 			</form>
 		</div>
 	</body>

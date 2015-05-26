@@ -9,6 +9,7 @@
 	
 	
 	<%@include file="/WEB-INF/views/public/taglib.jsp"%>
+	<%@include file="/WEB-INF/views/public/include_header.jsp" %>
 	<fmt:setBundle basename="messages" />
 <html>
 	<head>
@@ -26,7 +27,6 @@
 			<script type="text/javascript" src="${rootURL}/resources/js/app.js"></script>
 	</head>
 <body>
-	<jsp:include page="/WEB-INF/views/public/include_header.jsp" />
 		<div id="breadcrumb">
 		    <ul>
 		      <li class="first"><fmt:message key="breadcrumb.tag"/></li>

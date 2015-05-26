@@ -13,6 +13,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+
+// http://forum.linuxcareer.com/threads/84-Use-BASH-script-to-parse-a-line-from-log-file
+
 @Entity
 public class DeliveryQuality implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -22,6 +25,10 @@ public class DeliveryQuality implements Serializable {
 	@Column(name = "ID")
 	private int id;
 
+	
+	@Column(name = "PROJECT_NAME")
+	private String projectName;
+	
 	@Column(name = "PROJECT_TYPE")
 	private String projectType;
 

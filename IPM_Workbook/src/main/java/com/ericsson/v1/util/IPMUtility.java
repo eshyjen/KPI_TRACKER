@@ -1,12 +1,14 @@
 package com.ericsson.v1.util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +23,41 @@ import com.ericsson.ipm.v1.service.RoleService;
 public class IPMUtility {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(IPMUtility.class);
+	
+	private static final Map<String, String> map = new HashMap<String, String>();
+	private static final Configuration CONFIG = AdaptersConfiguration
+			.getInstance().getConfiguration();
+	
+	static {
+		Object IPM_HEADER_MENU = CONFIG.getProperty("ipm.header.menu");
+		LOGGER.info("IPM_HEADER_MENU : "+IPM_HEADER_MENU);
+		
+		
+		map.put("Core Values" , "ipmDashboard.html") ;  
+		map.put("Service Satisfaction (As per RcSE)" , "ipmDashboard.html") ;  
+		map.put("Service Satisfaction" , "ipmDashboard.html") ;  
+		map.put("Operational Discipline" , "ipmDashboard.html") ;  
+		map.put("Utilization" , "ipmDashboard.html") ;  
+		map.put("3PP Certification" , "ipmDashboard.html") ;  
+		map.put("Delivery quality" , "deliveryQualityDetails.html") ;  
+		map.put("Engage in Multiple Projects And Others" , "assetDetails.html");
+
+		
+		
+		/*if(IPM_HEADER_MENU instanceof List){
+			List<String> list = (List<String>())IPM_HEADER_MENU;
+		}*/
+			/*for(String val : (List)IPM_HEADER_MENU){
+		}*/
+		//String[] valuse = IPM_HEADER_MENU.split(",");
+		/*for(int i =0; i <valuse.length; i++){
+			String[] temps = valuse[i].split(":");
+			for(int j =0; j <temps.length; j++){
+				map.put(temps[0], temps[1]);
+			}
+		}*/
+		
+	}
 
 	public static Map<String, String> spiltMeta(String key, String metaVal,
 			int metaValMaxLengthInt) {
@@ -257,5 +294,9 @@ public class IPMUtility {
 			String kpiParam = request.getParameter(paramPrefix+role.getCode());
 			return kpiParam;
 		}
+	 
+	 public static String getParamValue(String KpiDisplayName){
+		 return map.get(KpiDisplayName);
+	 }
 	
 }

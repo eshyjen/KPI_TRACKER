@@ -1,6 +1,7 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+	<%@include file="/WEB-INF/views/public/taglib.jsp"%>
 <head>
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/main.css">
@@ -15,7 +16,7 @@ function back2ProtectedHome() {
 }
 
 </script>
-<!-- commit to github -->
+	
 </head>
 <div class="header">
 	<table cellpadding="0" cellspacing="0" width="100%">
@@ -33,10 +34,36 @@ function back2ProtectedHome() {
 				}
 			%>
 			</div></td>
+			
+			
+			<td>
+			<table>
+ <tr>
+  <td>
+   Example of 			
+  </td>
+  <td>
+   <ul class="dropv">
+   <li><a href="#">drop-down links</a> in imbedded text.	
+    <ul>
+    	<c:forEach items="${sessionScope.kpiDisplayNames}" var="kdn">
+    	<li><a href="${kdn.id}">${kdn.name}</a></li>
+    	</c:forEach>
+     </ul>
+    </li>
+   </ul>			
+  </td>	
+ </tr>
+</table>
+			
+			
+			</td>
+			
+			
 			<td width="50%" style="padding-right:12px"><% if (request.getRemoteUser() != null) {%><div align="right">
 			<a class="logout" href='<c:url value="${rootURL}/v1/public/logout.html"/>'>Logout</a></div><% } %></td>
 		</tr>
 	</table>
-
+	
 </div>
 

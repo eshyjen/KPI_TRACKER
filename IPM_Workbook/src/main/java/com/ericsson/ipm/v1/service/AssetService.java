@@ -6,7 +6,7 @@ public interface AssetService {
 	
 	public Asset save(Asset entity);
 	
-	public void remove(Asset entity);
+	public void remove(String  assetId);
 
 	public Asset update(Asset entity);
 	

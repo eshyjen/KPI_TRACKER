@@ -23,7 +23,7 @@
 <script>
 
 function validateForm() {
-  alert('in fname function');
+  alert('in fname function');  
 var x = document.forms["myForm"]["fname"].value;
     if (x == null || x == "") {
         alert('First name must be filled out');
@@ -39,11 +39,11 @@ var x = document.forms["myForm"]["fname"].value;
 	return true;
 }
 }
-
+ 
 
 
 function validate1Form() {
-    	alert('in lname function');
+    	alert('in lname function'); 
 	var x = document.forms["myForm"]["lname"].value;
     if (x == null || x == "") {
         alert('Last name must be filled out');
@@ -69,7 +69,7 @@ function validateEmail() {
      else
 		return true;
 }
-
+ 
 </script>
 
 
@@ -84,7 +84,7 @@ function validateEmail() {
 <center>
 <form:form modelAttribute="registrationDTO" method="POST" action="registration.html" enctype="utf8" name="myForm" >
 
-
+	
 		<br>
 				 <table>
 				<tr>
@@ -102,7 +102,7 @@ function validateEmail() {
 					<td><form:input path="emailId" value="" size="26"/></td>
 					<td><form:errors path="emailId" cssClass="alert alert-error"/></td>
 				</tr>
-
+				
 				<tr>
          	<td><label><spring:message code="label.form.loginRole" /></label></td>
          	<td>
@@ -114,7 +114,7 @@ function validateEmail() {
 			</td>
 			<td><form:errors path="userSelectedRole" cssClass="alert alert-error" /></td>
 		</tr>
-
+				
 				<tr>
 					<td><label><spring:message code="label.user.password"></spring:message></label></td>
 					<td><form:input path="password" value="" type="password" size="26"/></td>
@@ -123,7 +123,7 @@ function validateEmail() {
 				<tr>
 					<td><label><spring:message code="label.user.confirmPass"></spring:message></label></td>
 					<td><form:input path="matchingPassword" value="" type="password" size="26"/></td>
-					<td><form:errors path="matchingPassword" cssClass="alert alert-error" /></td>
+					<td><form:errors cssClass="alert alert-error" /></td>
 				</tr>
 				<tr>
 					<td><label><spring:message code="label.user.form.captchaCode"></spring:message></label>
@@ -137,7 +137,7 @@ function validateEmail() {
 					<td><form:input path="captchaCode" size="26"/></td>
 					<td><form:errors path="captchaCode" cssClass="alert alert-error" /></td>
 				</tr>
-
+				
 				<tr>
 				<td><button type="submit" class="btn btn-primary">
 					<spring:message code="label.form.submit"></spring:message>

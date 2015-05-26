@@ -114,7 +114,7 @@ public class UserProfile implements Serializable {
 
 	//bi-directional many-to-one association to Operationaldiscpline
 	@OneToMany(mappedBy="userprofile")
-	private List<Operationaldiscpline> operationaldiscplines;
+	private List<OperationalDiscipline> operationaldiscplines;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private List<UserRoleAssignment> roleAssignments = new ArrayList<UserRoleAssignment>(0);
@@ -350,22 +350,22 @@ public class UserProfile implements Serializable {
 		return asset;
 	}
 
-	public List<Operationaldiscpline> getOperationaldiscplines() {
+	public List<OperationalDiscipline> getOperationaldiscplines() {
 		return this.operationaldiscplines;
 	}
 
-	public void setOperationaldiscplines(List<Operationaldiscpline> operationaldiscplines) {
+	public void setOperationaldiscplines(List<OperationalDiscipline> operationaldiscplines) {
 		this.operationaldiscplines = operationaldiscplines;
 	}
 
-	public Operationaldiscpline addOperationaldiscpline(Operationaldiscpline operationaldiscpline) {
+	public OperationalDiscipline addOperationaldiscpline(OperationalDiscipline operationaldiscpline) {
 		getOperationaldiscplines().add(operationaldiscpline);
 		operationaldiscpline.setUserprofile(this);
 
 		return operationaldiscpline;
 	}
 
-	public Operationaldiscpline removeOperationaldiscpline(Operationaldiscpline operationaldiscpline) {
+	public OperationalDiscipline removeOperationaldiscpline(OperationalDiscipline operationaldiscpline) {
 		getOperationaldiscplines().remove(operationaldiscpline);
 		operationaldiscpline.setUserprofile(null);
 

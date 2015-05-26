@@ -25,8 +25,8 @@ public class AssetServiceImpl implements AssetService {
 	}
 
 	@Override
-	public void remove(Asset entity) {
-		
+	public void remove(String  assetId) {
+		assetDAO.remove(assetId);
 	}
 
 	@Override

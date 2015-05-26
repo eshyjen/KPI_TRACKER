@@ -14,6 +14,7 @@ import com.ericsson.ipm.v1.domain.Asset;
 import com.ericsson.ipm.v1.domain.DeliveryQuality;
 import com.ericsson.ipm.v1.domain.KPI;
 import com.ericsson.ipm.v1.domain.KPIRoleAssignment;
+import com.ericsson.ipm.v1.domain.OperationalDiscipline;
 import com.ericsson.ipm.v1.domain.Role;
 import com.ericsson.ipm.v1.domain.UserProfile;
 import com.ericsson.ipm.v1.domain.UserRoleAssignment;
@@ -24,7 +25,7 @@ import com.ericsson.ipm.v1.domain.UserRoleAssignment;
  * delete() operations must be handled externally by senders of these methods or
  * must be manually added to each of these methods for data to be persisted to
  * the JPA datastore.
- * 
+ *
  * @see com.ericsson.ipm.v1.domain.UserProfile
  * @author iqbal.hosain.khan@ericsson.com
  */
@@ -50,8 +51,8 @@ public class UserProfileDAOImpl extends BaseDAO<Integer, UserProfile> implements
 	public static final String YEAROFLASTPROMOTION = "yearOfLastPromotion";
 	public static final String PREVIOUSORGANISATION = "previousOrganisation";
 	public static final String YEAROFIPM = "yearOfIPM";
-	
-	
+
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserProfileDAOImpl.class);
 
 	private EntityManager getEntityManager() {
@@ -66,13 +67,13 @@ public class UserProfileDAOImpl extends BaseDAO<Integer, UserProfile> implements
 	 * persistence store, i.e., database. This method uses the
 	 * {@link javax.persistence.EntityManager#persist(Object)
 	 * EntityManager#persist} operation.
-	 * 
+	 *
 	 * <pre>
 	 * EntityManagerHelper.beginTransaction();
 	 * UserprofileDAO.save(entity);
 	 * EntityManagerHelper.commit();
 	 * </pre>
-	 * 
+	 *
 	 * @param entity
 	 *            Userprofile entity to persist
 	 * @throws RuntimeException
@@ -96,14 +97,14 @@ public class UserProfileDAOImpl extends BaseDAO<Integer, UserProfile> implements
 	 * permanently deleted from the persistence store, i.e., database. This
 	 * method uses the {@link javax.persistence.EntityManager#remove(Object)
 	 * EntityManager#delete} operation.
-	 * 
+	 *
 	 * <pre>
 	 * EntityManagerHelper.beginTransaction();
 	 * UserprofileDAO.delete(entity);
 	 * EntityManagerHelper.commit();
 	 * entity = null;
 	 * </pre>
-	 * 
+	 *
 	 * @param entity
 	 *            Userprofile entity to delete
 	 * @throws RuntimeException
@@ -131,13 +132,13 @@ public class UserProfileDAOImpl extends BaseDAO<Integer, UserProfile> implements
 	 * persistence store, i.e., database. This method uses the
 	 * {@link javax.persistence.EntityManager#merge(Object) EntityManager#merge}
 	 * operation.
-	 * 
+	 *
 	 * <pre>
 	 * EntityManagerHelper.beginTransaction();
 	 * entity = UserprofileDAO.update(entity);
 	 * EntityManagerHelper.commit();
 	 * </pre>
-	 * 
+	 *
 	 * @param entity
 	 *            Userprofile entity to update
 	 * @return Userprofile the persisted Userprofile entity instance, may not be
@@ -171,7 +172,7 @@ public class UserProfileDAOImpl extends BaseDAO<Integer, UserProfile> implements
 
 	/**
 	 * Find all Userprofile entities with a specific property value.
-	 * 
+	 *
 	 * @param propertyName
 	 *            the name of the Userprofile property to query
 	 * @param value
@@ -273,7 +274,7 @@ public class UserProfileDAOImpl extends BaseDAO<Integer, UserProfile> implements
 
 	/**
 	 * Find all Userprofile entities.
-	 * 
+	 *
 	 * @return List<Userprofile> all Userprofile entities
 	 */
 	@SuppressWarnings("unchecked")
@@ -288,7 +289,7 @@ public class UserProfileDAOImpl extends BaseDAO<Integer, UserProfile> implements
 			throw re;
 		}
 	}
-	
+
 	public List<UserProfile> findBySignunidWithRole(Object signunid) {
 		List<UserProfile> userProfiles = findByProperty(SIGNUNID, signunid);
 		for(UserProfile profile : userProfiles){
@@ -299,16 +300,16 @@ public class UserProfileDAOImpl extends BaseDAO<Integer, UserProfile> implements
 					KPI kpi = KPIRoleAssignment.getKpi();
 					LOGGER.debug("kpi.getKpiValue() : "+ kpi.getKpiValue());
 				}
-				
+
 			}
-			
+
 		}
 		return userProfiles;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<UserProfile> findByIdWithAsset(Object id) {
-		
+
 		try {
 			//final String queryString = "from UserProfile model left join fetch model.assets where model.id= :propertyValue";
 			final String queryString = "from UserProfile model where model.id= :propertyValue";
@@ -337,6 +338,25 @@ public class UserProfileDAOImpl extends BaseDAO<Integer, UserProfile> implements
 			for(UserProfile profile : userProfiles){
 				List<DeliveryQuality> deliveryQualities = profile.getDeliveryQualities();
 				LOGGER.debug("deliveryQualities : "+ deliveryQualities);
+			}
+			return userProfiles;
+		} catch (RuntimeException re) {
+			LOGGER.info("UserProfile find by property name failed"+ re);
+			throw re;
+		}
+	}
+
+	@Override
+	public List<UserProfile> findByIdWithOperationalDiscipline(Object id) {
+		try {
+			//final String queryString = "from UserProfile model left join fetch model.assets where model.id= :propertyValue";
+			final String queryString = "from UserProfile model where model.id= :propertyValue";
+			Query query = getEntityManager().createQuery(queryString);
+			query.setParameter("propertyValue", id);
+			List<UserProfile> userProfiles = query.getResultList();
+			for(UserProfile profile : userProfiles){
+				List<OperationalDiscipline> operationalDiscipline = profile.getOperationaldiscplines();
+				LOGGER.debug("deliveryQualities : "+ operationalDiscipline);
 			}
 			return userProfiles;
 		} catch (RuntimeException re) {

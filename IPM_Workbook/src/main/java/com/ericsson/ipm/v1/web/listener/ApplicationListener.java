@@ -520,7 +520,7 @@ public class ApplicationListener implements ServletContextListener {
 		kpis.add(kpi7);
 
 		Map<String, String> map8 = new HashMap<String, String>();
-		String kpiNameSWD8 = "Delivery quality "
+		String kpiNameSWD8 = "Delivery quality"
 				+ "a) Technical estimation accuracy "
 				+ "b) Scoping: Coverage of all functional and non functional requirments "
 				+ "c) 100% coverage of functional and non functional requirements in HLD and LLD "

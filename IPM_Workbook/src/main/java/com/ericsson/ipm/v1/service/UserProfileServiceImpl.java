@@ -27,18 +27,18 @@ import com.ericsson.v1.util.AdaptersConfiguration;
 @Transactional
 public class UserProfileServiceImpl implements UserProfileService {
 
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserProfileServiceImpl.class);
 
 	private static final Configuration CONFIG = AdaptersConfiguration
 			.getInstance().getConfiguration();
-	
+
 	private UserProfileDAO userProfileDAO;
-	
+
 	private RoleService roleService;
-	
+
 	private VerificationTokenDAO verificationTokenDAO;
-	
+
 	@Override
 	public List<UserProfile> findBySignumId(String signumId) {
 		LOGGER.debug("signumId : "+signumId);
@@ -65,14 +65,14 @@ public class UserProfileServiceImpl implements UserProfileService {
 
 	@Override
 	public UserProfile save(UserProfile entity) {
-		
+
 		return userProfileDAO.save(entity);
 	}
 
 	@Override
 	public void remove(UserProfile entity) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -84,21 +84,23 @@ public class UserProfileServiceImpl implements UserProfileService {
 	public List<UserProfile> findAll() {
 		return userProfileDAO.findAll();
 	}
-	
+
 	public List<UserProfile> findBySignunidWithRole(Object signunid) {
 		return userProfileDAO.findBySignunidWithRole(signunid);
 	}
-	
+
 	public UserProfile findByIdWithAsset(Object id) {
 		UserProfile userProfile = null;
 		List<UserProfile> userProfiles = userProfileDAO.findByIdWithAsset(id);
 		LOGGER.debug("userProfiles : "+userProfiles);
 		if(userProfiles != null && userProfiles.size() > 0){
 			userProfile = userProfiles.get(0);
+
+
 		}
 		LOGGER.debug("userProfile : "+userProfile);
 		return userProfile;
-		
+
 	}
 
 	@Override
@@ -106,7 +108,7 @@ public class UserProfileServiceImpl implements UserProfileService {
 		// TODO Auto-generated method stub
 		return userProfileDAO.getRefById(userId);
 	}
-	
+
 	public UserProfile findByIdWithDeliveryQuality(Object id) {
 		UserProfile userProfile = null;
 		List<UserProfile> userProfiles = userProfileDAO.findByIdWithDeliveryQuality(id);
@@ -116,9 +118,21 @@ public class UserProfileServiceImpl implements UserProfileService {
 		}
 		LOGGER.debug("userProfile : "+userProfile);
 		return userProfile;
-		
+
 	}
-	
+
+	public UserProfile findByIdWithOperationalDiscipline(Object id) {
+		UserProfile userProfile = null;
+		List<UserProfile> userProfiles = userProfileDAO.findByIdWithOperationalDiscipline(id);
+		LOGGER.debug("userProfiles for OperationalDiscipline: "+userProfiles);
+		if(userProfiles != null && userProfiles.size() > 0){
+			userProfile = userProfiles.get(0);
+		}
+		LOGGER.debug("userProfile : "+userProfile);
+		return userProfile;
+
+	}
+
 	@Override
     public UserProfile registerNewUserAccount(final RegistrationDTO accountDto) throws EmailExistsException {
         if (emailExist(accountDto.getEmailId())) {
@@ -127,7 +141,7 @@ public class UserProfileServiceImpl implements UserProfileService {
         final Date date = new Date();
 		final UserProfile userProfile = new UserProfile();
 		final List<UserRoleAssignment> roleAssignments = new ArrayList<UserRoleAssignment>();
-		
+
 		Role role = roleService.findById(accountDto.getUserSelectedRole());
 
 		userProfile.setCostCenter(accountDto.getCostCenter());
@@ -154,30 +168,30 @@ public class UserProfileServiceImpl implements UserProfileService {
 		userProfile.setUserLastName(accountDto.getUserLastName());
 		userProfile.setYearOfIPM("2015");
 		userProfile.setYearOfLastPromotion("N/A");
-		
+
 		Object isEnabled = CONFIG.getProperty("ipm.default.user.is_enabled");
 		if(isEnabled != null && "true".equalsIgnoreCase(isEnabled.toString())){
 			userProfile.setIsEnabled(Boolean.getBoolean(isEnabled.toString()));
 		}
 
-		
+
 		UserRoleAssignment userRoleAssignment = new UserRoleAssignment();
 		UserRoleAssignment userRoleAssignment1 = new UserRoleAssignment();
-		
+
 		userRoleAssignment.setRole(role);
 		userRoleAssignment.setUser(userProfile);
 
 		roleAssignments.add(userRoleAssignment);
-		
-		
+
+
 		List<Role> roles1 = roleService.findByCode("USER");
 		Role role1 = roles1.get(0);
 		userRoleAssignment1.setRole(role1);
 		userRoleAssignment1.setUser(userProfile);
 
 		roleAssignments.add(userRoleAssignment1);
-		
-		
+
+
 		userProfile.setRoleAssignments(roleAssignments);
 
         return userProfileDAO.save(userProfile);
@@ -191,15 +205,15 @@ public class UserProfileServiceImpl implements UserProfileService {
 	        }
 	        return false;
 	    }
-	 
-	 
-	 
+
+
+
 	 @Override
 	    public void createVerificationTokenForUser(final UserProfile user, final String token) {
 	        final VerificationToken myToken = new VerificationToken(token, user);
 	        verificationTokenDAO.save(myToken);
 	    }
-	 
+
 	 	@Override
 	    public VerificationToken getVerificationToken(final String VerificationToken) {
 	        return verificationTokenDAO.findByToken(VerificationToken);
@@ -212,13 +226,13 @@ public class UserProfileServiceImpl implements UserProfileService {
 	        vToken = verificationTokenDAO.save(vToken);
 	        return vToken;
 	    }
-	    
+
 	    @Override
 	    public UserProfile getUser(final String verificationToken) {
 	        final UserProfile user = verificationTokenDAO.findByToken(verificationToken).getUser();
 	        return user;
 	    }
-	    
+
 	    /*
 	    @Override
 	    public void createPasswordResetTokenForUser(final User user, final String token) {
@@ -236,8 +250,8 @@ public class UserProfileServiceImpl implements UserProfileService {
 	        return passwordTokenRepository.findByToken(token).getUser();
 	    }*/
 
-	 
-	 
+
+
 
 	@Autowired
 	public void setRoleService(RoleService roleService) {
@@ -253,6 +267,6 @@ public class UserProfileServiceImpl implements UserProfileService {
 	public void setVerificationTokenDAO(VerificationTokenDAO verificationTokenDAO) {
 		this.verificationTokenDAO = verificationTokenDAO;
 	}
-	 
-	
+
+
 }
